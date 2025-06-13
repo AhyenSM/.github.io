@@ -373,7 +373,7 @@
             }
             /* Reset margins and ensure full width for content and date wrappers on mobile */
             .timeline-content-wrapper, .timeline-date-wrapper {
-                width: 100%; /* Full width for wrappers */
+                width: calc(100% - 20px); /* Adjusted width to account for padding */
                 text-align: left !important; /* Ensure all text aligns left on mobile */
                 margin-left: 0 !important;
                 margin-right: 0 !important;
@@ -497,6 +497,12 @@
             }
             .md\:h-96 {
                 height: 24rem;
+            }
+
+            /* Skill tags break words on smaller screens */
+            .skill-tag {
+                white-space: normal; /* Allow skill tags to wrap text */
+                word-break: break-word; /* Break long words */
             }
         }
 
@@ -775,9 +781,7 @@
             animation: scroll-books var(--carousel-animation-duration) linear infinite;
             animation-direction: reverse; /* New: for left-to-right visual scroll (content moves right) */
             /* Removed padding as requested: padding: 1rem; */
-            /* Default values for the CSS variables */
-            --carousel-animation-duration: 30s; 
-            --carousel-translate-x: -2700px; /* (250px item width + 2rem/32px margin-right) * 10 items */
+            /* Default values for the CSS variables will be set by JS */
         }
 
         .carousel-container:hover .carousel-track {
@@ -845,8 +849,7 @@
             .carousel-item p {
                 font-size: 0.85rem;
             }
-            /* Adjust translateX for mobile. Recalculated for 200px width + 1.5rem/24px margin = 224px per item */
-            /* This will be handled dynamically in JS based on actual width */
+            /* translateX for mobile will be calculated dynamically by JS */
         }
 
     </style>
@@ -863,7 +866,7 @@
 
                     <div class="flex flex-col md:flex-row items-center justify-center gap-8 md:gap-12">
                         <div id="profile-pic-container" class="relative rounded-2xl px-0 py-2 bg-black/20">
-                            <img id="profile-pic" src="https://raw.githubusercontent.com/AhyenSM/profile-images/main/Portrait_LinkedIn_jpg(1)(1).png" alt="Ahyen Samrial Mostofa" class="rounded-xl w-auto md:w-auto h-80 md:h-96 object-cover object-top">
+                            <img id="profile-pic" src="https://raw.githubusercontent.com/AhyenSM/profile-images/main/Portrait_LinkedIn_jpg(1)(1).png" alt="Ahyen Samrial Mostofa" class="rounded-xl w-auto h-80 md:w-auto md:h-96 object-cover object-top">
                         </div>
                         <div class="relative text-center md:text-left">
                                <div id="arrow-pointer" class="hidden md:block">
@@ -888,14 +891,14 @@
                     </div>
 
                     <div class="mt-20 text-center">
-                               <div class="flex justify-center flex-wrap gap-8">
+                               <div class="flex justify-center flex-wrap gap-8 px-4"> <!-- Added px-4 for smaller screens -->
                                    <div id="show-personal-btn" class="nav-block">Get to<br>know me<br>personally</div>
                                    <div id="show-academics-btn" class="nav-block">Discover my<br>academics<br>and awards</div>
                                    <div id="show-professional-btn" class="nav-block">Learn about my<br>professional<br>self</div>
                                </div>
                                <div class="mt-16">
                                     <p class="mb-6 text-gray-300 text-lg font-medium">Or connect with me</p>
-                                    <form id="email-submit-form" class="flex flex-col justify-center items-center gap-3 max-w-lg mx-auto">
+                                    <form id="email-submit-form" class="flex flex-col justify-center items-center gap-3 max-w-lg mx-auto px-4"> <!-- Added px-4 -->
                                            <input type="email" name="email" placeholder="Drop your email..." class="bg-gray-900/30 border-2 border-orange-500/30 rounded-full px-6 py-3 focus:outline-none focus:ring-2 focus:ring-orange-500 focus:border-orange-500 w-full sm:w-72 transition text-white placeholder-gray-400" required>
                                            <textarea id="message-slot" name="message" placeholder="Add a message (optional)" maxlength="100" class="bg-gray-900/30 border-2 border-orange-500/30 rounded-full px-6 py-3 focus:outline-none focus:ring-2 focus:ring-orange-500 focus:border-orange-500 w-full sm:w-72 transition-all duration-300 ease-in-out text-white placeholder-gray-400 resize-none overflow-hidden h-12"></textarea>
                                            <button type="submit" class="bg-gradient-to-r from-orange-500 to-pink-500 hover:from-orange-600 hover:to-pink-600 text-white font-bold py-3 px-8 rounded-full transition transform hover:scale-105 w-full sm:w-auto shadow-lg">Submit</button>
@@ -906,7 +909,7 @@
 
                 </div>
                 <footer class="w-full">
-                    <div class="flex justify-center space-x-8">
+                    <div class="flex justify-center space-x-8 px-4"> <!-- Added px-4 -->
                         <a href="https://www.instagram.com/ahyensamrialostofa/" target="_blank" rel="noopener noreferrer" class="text-gray-300 hover:text-orange-400 transition-all duration-300 transform hover:scale-110">
                             <i class="fab fa-instagram fa-3x"></i>
                         </a>
@@ -964,7 +967,7 @@
                 </div>
 
                 <!-- Moved buttons section outside quran-verse-container -->
-                <div class="flex flex-col sm:flex-row justify-center items-center gap-6 mt-6 w-full max-w-lg mx-auto">
+                <div class="flex flex-col sm:flex-row justify-center items-center gap-6 mt-6 w-full max-w-lg mx-auto px-4"> <!-- Added px-4 -->
                     <a href="https://quran.com/" target="_blank" rel="noopener noreferrer" class="inline-block bg-gradient-to-r from-purple-600 to-indigo-600 hover:from-purple-700 hover:to-indigo-700 text-white font-extrabold py-4 px-8 rounded-full transition transform hover:scale-105 shadow-lg w-full sm:w-auto text-center text-xl">
                         Explore the Holy Quran
                     </a>
@@ -972,12 +975,12 @@
                         Why Islam?
                     </a>
                 </div>
-                <p class="text-lg sm:text-xl md:text-2xl text-gray-200 w-full max-w-5xl text-center mx-auto font-medium leading-relaxed mt-10">
+                <p class="text-lg sm:text-xl md:text-2xl text-gray-200 w-full max-w-5xl text-center mx-auto font-medium leading-relaxed mt-10 px-4"> <!-- Added px-4 -->
                     Welcome to my personal corner! Beyond my professional life, I'm a passionate individual who enjoys a variety of activities. You'll often find me <strong class="bg-gradient-to-r from-orange-400 to-pink-400 bg-clip-text text-transparent">immersed in non-fictional books</strong>, challenging myself with a refreshing <strong class="bg-gradient-to-r from-cyan-400 to-blue-400 bg-clip-text text-transparent">swim</strong>, or exploring flavors through <strong class="bg-gradient-to-r from-green-400 to-yellow-400 bg-clip-text text-transparent">simple cooking & eating</strong>. When I'm not immersed in tech, you can find me hiking local trails or experimenting with new recipes in the kitchen. Let's connect if we share similar passions!
                 </p>
 
                 <!-- NEW PERSONALITY SECTION - COMBINED INTO A SINGLE BOX -->
-                <div class="personality-section-container w-full max-w-4xl mx-auto flex justify-center items-center gap-8 mt-12 mb-12">
+                <div class="personality-section-container w-full max-w-4xl mx-auto flex justify-center items-center gap-8 mt-12 mb-12 px-4"> <!-- Added px-4 -->
                     <div class="personality-combined-box w-full max-w-2xl mx-auto relative">
                         <div class="personality-text-section">
                             <!-- Adjusted heading text and removed optional line break -->
@@ -999,7 +1002,7 @@
                 <!-- END NEW PERSONALITY SECTION -->
 
                 <!-- Books I Recommend Section -->
-                <div class="books-recommend-section w-full max-w-4xl mx-auto text-center mt-12 mb-12">
+                <div class="books-recommend-section w-full max-w-4xl mx-auto text-center mt-12 mb-12 px-4"> <!-- Added px-4 -->
                     <h3 class="text-4xl sm:text-5xl font-black mb-8 text-center bg-gradient-to-r from-cyan-400 to-orange-400 bg-clip-text text-transparent">Books I Recommend</h3>
                     <div class="carousel-container" id="book-carousel-container">
                         <div class="carousel-track" id="book-carousel-track">
@@ -1062,7 +1065,7 @@
             
                 <!-- Social Footer for Personal page - MOVED INSIDE content-wrapper -->
                 <footer class="w-full mt-16"> <!-- Added mt-16 for spacing, adjust as needed -->
-                    <div class="flex justify-center space-x-8">
+                    <div class="flex justify-center space-x-8 px-4"> <!-- Added px-4 -->
                         <a href="https://www.instagram.com/ahyensamrialostofa/" target="_blank" rel="noopener noreferrer" class="text-gray-300 hover:text-orange-400 transition-all duration-300 transform hover:scale-110">
                             <i class="fab fa-instagram fa-3x"></i>
                         </a>
@@ -1095,7 +1098,7 @@
             <div class="content-wrapper">
                 <div class="w-full max-w-4xl mx-auto flex-grow flex flex-col justify-start items-center py-8">
                     <h2 class="text-5xl sm:text-6xl lg:text-7xl font-black mb-6 sm:mb-8 text-center bg-gradient-to-r from-cyan-400 to-orange-400 bg-clip-text text-transparent">Professional Self</h2>
-                    <p class="text-lg sm:text-xl text-gray-200 max-w-3xl text-center font-medium leading-relaxed mb-8 sm:mb-12">
+                    <p class="text-lg sm:text-xl text-gray-200 max-w-3xl text-center font-medium leading-relaxed mb-8 sm:mb-12 px-4"> <!-- Added px-4 -->
                         As an Electrical Engineering graduate specializing in Automation & Control Systems,
                         my journey has encompassed diverse roles from <strong class="text-cyan-400">Operations & Marketing</strong> to <strong class="text-orange-400">Customer Experience Consultancy</strong>.
                         I bring a blend of technical expertise, problem-solving skills, and a commitment to innovation, as detailed in my extensive work history and skill set.
@@ -1257,7 +1260,7 @@
                 </div>
                 <!-- Footer added here -->
                 <footer class="w-full mt-16">
-                    <div class="flex justify-center space-x-8">
+                    <div class="flex justify-center space-x-8 px-4"> <!-- Added px-4 -->
                         <a href="https://www.instagram.com/ahyensamrialostofa/" target="_blank" rel="noopener noreferrer" class="text-gray-300 hover:text-orange-400 transition-all duration-300 transform hover:scale-110">
                             <i class="fab fa-instagram fa-3x"></i>
                         </a>
@@ -1291,7 +1294,7 @@
                 <div class="w-full max-w-4xl mx-auto flex-grow flex flex-col justify-start items-center py-8">
                     <h2 class="text-5xl sm:text-6xl lg:text-7xl font-black mb-6 sm:mb-8 text-center bg-gradient-to-r from-green-400 to-teal-400 bg-clip-text text-transparent">Academics & Awards</h2>
 
-                    <p class="text-lg sm:text-xl text-gray-200 max-w-3xl text-center font-medium leading-relaxed mb-8 sm:mb-12">
+                    <p class="text-lg sm:text-xl text-gray-200 max-w-3xl text-center font-medium leading-relaxed mb-8 sm:mb-12 px-4"> <!-- Added px-4 -->
                         My academic journey has been dedicated to Electrical Engineering, with a strong focus on <strong class="text-green-400">Automation & Control Systems</strong>.
                         This section highlights my <strong class="text-lime-400">degrees</strong>, significant <strong class="text-cyan-400">publications</strong>, notable <strong class="text-orange-400">awards</strong>, and relevant <strong class="text-purple-400">certifications</strong> earned through continuous learning and engagement in the field.
                     </p>
@@ -1455,7 +1458,7 @@
                     <button class="back-to-home nav-block mt-16 w-auto h-auto text-xl !py-4 !px-8 font-bold">← Go Back</button>
                 </div>
                 <footer class="w-full">
-                    <div class="flex justify-center space-x-8">
+                    <div class="flex justify-center space-x-8 px-4"> <!-- Added px-4 -->
                         <a href="https://www.instagram.com/ahyensamrialostofa/" target="_blank" rel="noopener noreferrer" class="text-gray-300 hover:text-orange-400 transition-all duration-300 transform hover:scale-110">
                             <i class="fab fa-instagram fa-3x"></i>
                         </a>
@@ -1580,9 +1583,12 @@
 
         const startCarousel = () => {
             if (bookCarouselTrack) {
-                // Remove any existing cloned items to prevent duplication on re-entry
+                // Clear any previous clones and reset the track
                 const existingClones = bookCarouselTrack.querySelectorAll('.carousel-item.cloned');
                 existingClones.forEach(clone => clone.remove());
+                bookCarouselTrack.style.transition = 'none'; // Temporarily disable transition
+                bookCarouselTrack.style.transform = 'translateX(0)'; // Reset position
+                void bookCarouselTrack.offsetWidth; // Trigger reflow for transition reset
 
                 // Clone original track content to create a seamless loop
                 const originalChildren = Array.from(bookCarouselTrack.children);
@@ -1593,16 +1599,21 @@
                 });
 
                 // Calculate total width of original items for animation
-                const itemWidth = originalChildren[0].offsetWidth + parseFloat(window.getComputedStyle(originalChildren[0]).marginRight);
-                const totalOriginalItems = originalChildren.length;
-                const totalTranslateWidth = itemWidth * totalOriginalItems;
+                // Use getBoundingClientRect for accurate width including margins
+                const firstItem = originalChildren[0];
+                if (!firstItem) return; // Exit if no items
+                const itemWidth = firstItem.offsetWidth;
+                const itemMarginRight = parseFloat(window.getComputedStyle(firstItem).marginRight);
+                const totalItemScrollWidth = (itemWidth + itemMarginRight) * originalChildren.length;
 
-                // Update CSS variables directly on the element
-                // The animation direction is now handled by CSS 'animation-direction: reverse;'
-                const animationDuration = totalOriginalItems * 3; // 3 seconds per book approx for speed
-                bookCarouselTrack.style.setProperty('--carousel-animation-duration', `${animationDuration}s`);
-                bookCarouselTrack.style.setProperty('--carousel-translate-x', `-${totalTranslateWidth}px`); // Keep as negative for normal animation direction
+                // Adjust animation duration based on content length for consistent speed
+                const animationDuration = (totalItemScrollWidth / 80) + 's'; // Adjust 80px/s speed as needed
 
+                bookCarouselTrack.style.setProperty('--carousel-animation-duration', animationDuration);
+                bookCarouselTrack.style.setProperty('--carousel-translate-x', `-${totalItemScrollWidth}px`);
+                
+                // Re-enable transition and start animation
+                bookCarouselTrack.style.transition = ''; // Restore transition (or set to your desired transition)
                 bookCarouselTrack.style.animationPlayState = 'running';
                 isCarouselPaused = false;
             }
