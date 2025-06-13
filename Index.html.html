@@ -1,0 +1,2239 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ahyen Samrial Mostofa - Personal Portfolio</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+    <!-- Adding 'Varela Round' for the INTJ-T font -->
+    <link href="https://fonts.googleapis.com/css2?family=Varela+Round&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Naskh+Arabic:wght@400;700&family=Scheherazade+New&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css?v=6.5.2" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <style>
+        /* Base styling */
+        html, body {
+            height: 100%; /* Ensure html and body take full viewport height */
+            overflow: hidden; /* Prevent default body scrolling */
+        }
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+            background: linear-gradient(135deg, #0f0f23 0%, #1a1a2e 35%, #16213e  70%, #0f0f23 100%);
+            color: #FFFFFF;
+            overflow-x: hidden; /* Only hide horizontal overflow */
+            min-height: 100vh;
+        }
+
+        /* Faint robotic hand background */
+        .background-image-container {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100vh;
+            z-index: -2;
+            background-image: url('https://images.unsplash.com/photo-1581092921462-697de703a35a?q=80&w=2070&auto=format&fit=crop');
+            background-size: cover;
+            background-position: center;
+            opacity: 0.1; /* Faintly visible */
+        }
+
+        /* The cursor-following glow effect, now on top of the image */
+        body::before {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100vh;
+            pointer-events: none;
+            z-index: -1;
+            background: radial-gradient(
+                800px circle at var(--cursor-x) var(--cursor-y),
+                rgba(255, 107, 0, 0.08),
+                rgba(34, 211, 238, 0.06),
+                transparent 60%
+            );
+            transition: background 0.15s ease-out;
+        }
+
+        /* Main container for page transitions */
+        .page-container {
+            position: relative;
+            width: 100%;
+            height: 100%; /* Ensure page-container takes full viewport height */
+            overflow: hidden; /* No scrolling on page-container itself */
+        }
+
+        /* Sections for landing, personal, professional, and new academics section */
+        .page-section {
+            position: absolute; /* All sections overlap, one is displayed at a time */
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%; /* Ensure sections take full viewport height */
+            padding: 0; /* Remove padding from here, move to inner content */
+            box-sizing: border-box;
+            transition: transform 0.8s cubic-bezier(0.68, -0.55, 0.27, 1.55), opacity 0.8s ease;
+            opacity: 0; /* Hidden by default */
+            pointer-events: none; /* Not interactive when hidden */
+        }
+
+        /* --- Page Transition States (Morph Effect) --- */
+        #home.active { opacity: 1; transform: translateX(0) scale(1); pointer-events: auto; }
+
+        #personal { transform: translateX(100%); } /* Starts off-screen right */
+        #personal.active { transform: translateX(0); opacity: 1; pointer-events: auto; }
+        #home.hide-personal { opacity: 0; transform: translateX(-100%) scale(0.8); } /* Home moves left and scales down */
+
+        #professional { transform: translateX(-100%); } /* Starts off-screen left */
+        #professional.active { transform: translateX(0); opacity: 1; pointer-events: auto; }
+        #home.hide-professional { opacity: 0; transform: translateX(100%) scale(0.8); } /* Home moves right and scales down */
+
+        #academics { transform: translateY(100%); } /* Starts off-screen bottom */
+        #academics.active { transform: translateY(0); opacity: 1; pointer-events: auto; }
+        #home.hide-academics { opacity: 0; transform: translateY(-100%) scale(0.8); } /* Home moves up and scales down */
+
+
+        /* --- Element Styling --- */
+        #landing-content { opacity: 0; transform: translateY(20px); animation: fadeIn 1s ease 0.5s forwards; }
+        @keyframes fadeIn { to { opacity: 1; transform: translateY(0); } }
+
+        #profile-pic-container {
+            border: 2px solid rgba(255, 107, 0, 0.3);
+            box-shadow: 0 0 40px rgba(255, 107, 0, 0.15), 0 0 80px rgba(34, 211, 238, 0.1);
+            background: linear-gradient(135deg, rgba(255, 107, 0, 0.1), rgba(34, 211, 238, 0.05));
+        }
+
+        /* Arrow styling, now using vibrant orange */
+        #arrow-pointer { position: absolute; left: -45px; top: 15px; color: #ff6b00; }
+        #arrow-pointer svg { width: 40px; height: 40px; transform: rotate(-30deg); filter: drop-shadow(0 0 10px rgba(255, 107, 0, 0.5)); }
+
+        /* Typing effect cursor */
+        .typing-cursor {
+            display: inline-block;
+            width: 4px;
+            height: 1.2em; /* Set height relative to font size */
+            background: linear-gradient(45deg, #ff6b00, #22d3ee);
+            animation: blink 1s infinite;
+            margin-left: 6px;
+            border-radius: 2px;
+            vertical-align: middle; /* Align with text baseline */
+        }
+        @keyframes blink { 50% { opacity: 0; } }
+
+        /* New Navigation Block styling */
+        .nav-block {
+            width: 320px;
+            height: 160px;
+            padding: 2rem;
+            border: 2px solid rgba(255, 107, 0, 0.2);
+            border-radius: 2rem;
+            background: linear-gradient(135deg, rgba(255, 107, 0, 0.1), rgba(34, 211, 238, 0.05));
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            transition: all 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+            cursor: pointer;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            font-size: 1.5rem;
+            font-weight: 600;
+            line-height: 1.4;
+            color: #ffffff;
+            max-width: 100%; /* Ensure it doesn't overflow on very small screens */
+            box-sizing: border-box; /* Include padding in width calculation */
+        }
+        .nav-block:hover {
+            background: linear-gradient(135deg, rgba(255, 107, 0, 0.2), rgba(34, 211, 238, 0.1));
+            border-color: rgba(255, 107, 0, 0.6);
+            transform: translateY(-8px) scale(1.02);
+            box-shadow: 0 20px 40px rgba(255, 107, 0, 0.2), 0 0 60px rgba(34, 211, 238, 0.1);
+        }
+
+        /* Footer styling */
+        footer {
+            padding: 2rem;
+            text-align: center;
+            background-color: rgba(10, 10, 10, 0.7);
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+            color: #ccc;
+            /* Remove margin-top: auto; from here when moved inside content-wrapper */
+            width: 100%; /* Ensure footer spans full width */
+            flex-shrink: 0; /* Prevent footer from shrinking in flex containers */
+        }
+
+        /* Message display styling */
+        #form-message {
+            margin-top: 1rem;
+            padding: 0.75rem 1.5rem;
+            border-radius: 0.5rem;
+            font-weight: 600;
+            text-align: center;
+            opacity: 0;
+            transition: opacity 0.3s ease-in-out;
+        }
+        #form-message.show {
+            opacity: 1;
+        }
+        #form-message.success {
+            background-color: rgba(76, 175, 80, 0.2); /* Green */
+            color: #4CAF50;
+        }
+        #form-message.error {
+            background-color: rgba(244, 67, 54, 0.2); /* Red */
+            color: #F44336;
+        }
+
+        /* Timeline Specific Styles */
+        .timeline {
+            position: relative;
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px 0;
+        }
+
+        .timeline::before {
+            content: '';
+            position: absolute;
+            width: 8px; /* Thicker line */
+            background-color: rgba(255, 107, 0, 0.6); /* Slightly more vibrant orange */
+            top: 0;
+            bottom: 0;
+            left: 50%;
+            margin-left: -4px; /* Half of width to center */
+            border-radius: 4px;
+        }
+
+        .timeline-item {
+            position: relative;
+            margin-bottom: 40px; /* More space between items */
+            display: flex; /* Use flexbox for horizontal alignment */
+            align-items: center; /* Align items vertically with the dot */
+            min-height: 120px; /* Ensure enough height for content and dot alignment */
+            width: 100%; /* Occupy full width of its parent */
+        }
+
+        .timeline-item::after {
+            content: '';
+            position: absolute;
+            width: 28px; /* Bigger dot */
+            height: 28px;
+            background-color: #22d3ee; /* Cyan dot */
+            border: 4px solid #ff6b00; /* Orange border */
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            border-radius: 50%;
+            z-index: 2;
+        }
+
+        /* Common styles for content and date wrappers */
+        .timeline-content-wrapper, .timeline-date-wrapper {
+            position: relative;
+            width: calc(50% - 40px); /* Half width minus space for gap and dot */
+            padding: 15px 25px; /* Adjust padding */
+            background: rgba(34, 40, 49, 0.8); /* Darker background, slightly less transparent */
+            border-radius: 8px; /* Slightly more rounded corners */
+            box-shadow: 0 6px 12px rgba(0,0,0,0.3); /* Stronger shadow */
+            border: 1px solid rgba(255, 107, 0, 0.3); /* Slightly more prominent border */
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+
+        /* Positioning for left and right timeline items */
+        .timeline-item.left {
+            justify-content: flex-start; /* Puts first child (content) on left */
+        }
+
+        .timeline-item.right {
+            justify-content: flex-end; /* Puts first child (date) on left, second (content) on right */
+        }
+
+        /* Specific margins for alternating layout on desktop */
+        .timeline-item.left .timeline-content-wrapper {
+            margin-right: 40px; /* Space between content and central line/dot */
+            text-align: right;
+        }
+        .timeline-item.left .timeline-date-wrapper {
+            margin-left: 40px; /* Space between date and central line/dot */
+            text-align: left;
+        }
+
+        .timeline-item.right .timeline-date-wrapper {
+            margin-right: 40px; /* Space between date and central line/dot */
+            text-align: right;
+        }
+        .timeline-item.right .timeline-content-wrapper {
+            margin-left: 40px; /* Space between content and central line/dot */
+            text-align: left;
+        }
+
+
+        .timeline-content h3 {
+            font-size: 1.4rem; /* Adjust title font size */
+            color: #22d3ee; /* Cyan for title */
+            margin-bottom: 3px;
+            font-weight: bold; /* Bold designation */
+        }
+
+        .timeline-content p strong { /* For company name */
+            color: #ff6b00; /* Orange color for company name */
+            font-weight: bold; /* Bold company name */
+        }
+
+        .timeline-content p { /* For description */
+            font-size: 0.95rem; /* Adjust description font size */
+            color: #ccc; /* White font for description */
+            line-height: 1.5;
+        }
+
+        .timeline-date-wrapper small {
+            font-size: 1.25rem; /* Increased font size for dates */
+            font-weight: 600;
+            color: #ccc; /* White font for dates */
+            white-space: nowrap; /* Prevent date from wrapping */
+            display: block; /* Ensure it takes its own line */
+            line-height: 1.5; /* Add line height for readability */
+        }
+
+        /* Arrows for content boxes - re-adjusting for new structure */
+        .timeline-content-wrapper::before {
+            content: '';
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
+            width: 0;
+            height: 0;
+            border: 12px solid transparent; /* Larger arrow */
+            z-index: 1;
+        }
+
+        .timeline-item.left .timeline-content-wrapper::before {
+            left: 100%; /* Arrow points from the right edge of left content box */
+            border-left-color: rgba(34, 40, 49, 0.8); /* Match content background */
+        }
+
+        .timeline-item.right .timeline-content-wrapper::before {
+            right: 100%; /* Arrow points from the left edge of right content box */
+            border-right-color: rgba(34, 40, 49, 0.8); /* Match content background */
+        }
+
+        /* Styling for the "Current Experience" block */
+        .timeline-item.current-experience .timeline-content-wrapper,
+        .timeline-item.current-experience .timeline-date-wrapper {
+            background: linear-gradient(135deg, rgba(34, 211, 238, 0.4), rgba(255, 107, 0, 0.4)); /* Vibrant gradient background */
+            border-color: #22d3ee; /* Stronger border */
+            box-shadow: 0 0 20px rgba(34, 211, 238, 0.6), 0 0 40px rgba(255, 107, 0, 0.4); /* Glowing shadow */
+        }
+
+        .timeline-item.current-experience .timeline-content h3 {
+            color: #fff; /* White title for better contrast on vibrant background */
+        }
+        .timeline-item.current-experience .timeline-content p strong {
+            color: #ffe0b2; /* Lighter orange for company name */
+        }
+        .timeline-item.current-experience .timeline-content p {
+            color: #ebf8ff; /* Lighter white for description */
+        }
+        .timeline-item.current-experience .timeline-date-wrapper small {
+            color: #fff; /* White date */
+        }
+
+        /* Adjust arrow for current experience to match its new background */
+        .timeline-item.current-experience .timeline-content-wrapper::before {
+            border-left-color: rgba(34, 211, 238, 0.4); /* Match new background for left arrow */
+            border-right-color: rgba(34, 211, 238, 0.4); /* Match new background for right arrow */
+        }
+
+
+        /* Responsive adjustments for timeline */
+        @media screen and (max-width: 768px) {
+            .timeline::before {
+                left: 20px; /* Line on the left */
+                width: 6px; /* Slightly thinner on mobile */
+                margin-left: -3px;
+            }
+            .timeline-item {
+                width: 100%; /* Full width */
+                padding-left: 60px; /* Space for dot and content */
+                padding-right: 20px; /* Add some right padding */
+                left: 0 !important; /* Force all to left */
+                flex-direction: column; /* Stack date and content vertically */
+                align-items: flex-start; /* Align content to the left */
+                min-height: auto; /* Allow height to adjust */
+            }
+            .timeline-item::after {
+                left: 20px; /* Align dot with the line */
+                transform: translateY(-50%); /* Only translate Y, as X is now fixed at 20px */
+            }
+            /* Reset margins and ensure full width for content and date wrappers on mobile */
+            .timeline-content-wrapper, .timeline-date-wrapper {
+                width: 100%; /* Full width for wrappers */
+                text-align: left !important; /* Ensure all text aligns left on mobile */
+                margin-left: 0 !important;
+                margin-right: 0 !important;
+                padding: 15px; /* Adjust padding */
+            }
+            /* Order for mobile: date first, then content */
+            .timeline-item.left .timeline-date-wrapper,
+            .timeline-item.right .timeline-date-wrapper {
+                order: 1; /* Place date above content */
+                margin-bottom: 10px; /* Space between date and content */
+            }
+            .timeline-item.left .timeline-content-wrapper,
+            .timeline-item.right .timeline-content-wrapper {
+                order: 2; /* Place content below date */
+            }
+            /* Adjust content arrows for single column on mobile */
+            .timeline-content-wrapper::before {
+                left: -12px; /* Position arrow to point from left edge of content box */
+                right: auto;
+                border-left-color: transparent; /* Reset for left-aligned arrow */
+                border-right-color: rgba(34, 40, 49, 0.8); /* Point right */
+            }
+            .timeline-item.current-experience .timeline-content-wrapper::before {
+                border-right-color: rgba(34, 211, 238, 0.4); /* Match new background for right arrow on mobile */
+            }
+        }
+
+        /* Responsive adjustments for overall layout */
+        @media (max-width: 768px) {
+            .flex-col-reverse-md {
+                flex-direction: column-reverse;
+            }
+            .gap-8-md {
+                gap: 2rem;
+            }
+            .text-center-md {
+                text-align: center;
+            }
+            .md\:text-left {
+                text-align: center;
+            }
+            .md\:w-80 {
+                width: 18rem; /* smaller width for mobile */
+            }
+            .md\:h-56 {
+                height: 12rem; /* smaller height for mobile */
+            }
+            /* Adjust name font size for smaller screens */
+            .text-7xl {
+                font-size: 3.5rem; /* ~56px */
+            }
+            .lg\:text-8xl {
+                font-size: 4.5rem; /* ~72px */
+            }
+             .text-5xl { /* Professional/Personal page header */
+                font-size: 3rem; /* Adjusted for smaller screens */
+            }
+            .lg\:text-7xl {
+                font-size: 4rem; /* Adjusted for smaller screens */
+            }
+            .text-3xl { /* Typing effect on smaller screens */
+                font-size: 2rem;
+            }
+            .md\:text-5xl {
+                 font-size: 2.5rem;
+            }
+            .nav-block {
+                width: 100%; /* Full width for nav blocks on mobile */
+                height: auto;
+                font-size: 1.25rem;
+                padding: 1.5rem;
+            }
+             .text-lg {
+                font-size: 1rem;
+            }
+            .text-xl {
+                font-size: 1.125rem;
+            }
+            /* md\:w-112 was 28rem, now adjusting for mobile */
+            .md\:w-112 {
+                width: 20rem; /* Adjusted for consistency on smaller screens */
+            }
+            /* md\:h-72 was 18rem, now adjusting for mobile */
+            .md\:h-72 {
+                height: 16rem; /* Adjusted for consistency on smaller screens */
+            }
+        }
+
+        @media (max-width: 480px) {
+            .text-7xl {
+                font-size: 2.5rem; /* Even smaller for very small phones */
+            }
+            .lg\:text-8xl {
+                font-size: 3.5rem;
+            }
+             .text-5xl {
+                font-size: 2.25rem;
+            }
+            .lg\:text-7xl {
+                font-size: 3rem;
+            }
+            .text-3xl {
+                font-size: 1.5rem;
+            }
+            .md\:text-5xl {
+                 font-size: 2.0rem; /* Adjusted for smaller screens */
+            }
+             #profile-pic-container img {
+                width: 16rem; /* Adjust image size for very small screens */
+                height: 10rem;
+            }
+            /* Ensuring these are consistent with above */
+            .w-auto {
+                width: auto;
+            }
+            .h-80 {
+                height: 20rem; /* Adjust image size for very small screens */
+            }
+            .md\:w-auto {
+                width: auto;
+            }
+            .md\:h-96 {
+                height: 24rem;
+            }
+        }
+
+        /* Scroll buttons styles */
+        .scroll-button {
+            position: fixed;
+            z-index: 1000;
+            width: 56px; /* Increased size */
+            height: 56px; /* Increased size */
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            border-radius: 9999px; /* Fully rounded */
+            background: linear-gradient(135deg, rgba(255, 107, 0, 0.7), rgba(34, 211, 238, 0.7));
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            color: white;
+            font-size: 1.8rem; /* Larger icon */
+            cursor: pointer;
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.3s ease, transform 0.2s ease;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.3);
+        }
+
+        .scroll-button:hover {
+            transform: scale(1.1);
+            box-shadow: 0 6px 20px rgba(0,0,0,0.4);
+        }
+
+        .scroll-button.visible {
+            opacity: 0.8; /* More visible when active */
+            pointer-events: auto;
+        }
+
+        #scroll-to-top-btn {
+            bottom: 120px; /* Position above bottom button */
+            right: 20px;
+        }
+
+        #scroll-to-bottom-btn {
+            bottom: 50px;
+            right: 20px;
+        }
+
+        /* Content Wrapper inside each page-section (this is the scrollable area) */
+        .content-wrapper {
+            width: 100%;
+            height: 100%; /* Make it take full height of the section */
+            overflow-y: auto; /* Enable vertical scrolling */
+            -webkit-overflow-scrolling: touch; /* Smooth scrolling on iOS */
+            display: flex;
+            flex-direction: column; /* Stack content vertically */
+            align-items: center; /* Center content horizontally within the scrollable area */
+            padding-top: 2rem; /* Add consistent padding for headers */
+            padding-bottom: 2rem; /* Add consistent padding for footers */
+            padding-left: 1rem; /* Responsive side padding */
+            padding-right: 1rem; /* Responsive side padding */
+            box-sizing: border-box; /* Include padding in element's total width and height */
+        }
+
+        /* Specific elements within content-wrapper that might have their own max-width, e.g., the text paragraphs */
+        .content-wrapper > .w-full.max-w-4xl,
+        .content-wrapper > .max-w-3xl,
+        .content-wrapper > .space-y-8,
+        .content-wrapper > .flex.flex-wrap { /* Added flex wrap for skill tags */
+            padding-left: 1rem; /* Add side padding to these elements */
+            padding-right: 1rem;
+            box-sizing: border-box;
+        }
+
+        /* Styling for the logo container */
+        .logo-container {
+            width: 70px; /* Adjusted width */
+            height: 70px; /* Adjusted height */
+            background-color: white; /* White background */
+            border-radius: 8px; /* Slightly rounded corners */
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 8px; /* Padding inside the container */
+            box-shadow: 0 2px 8px rgba(0,0,0,0.2); /* Subtle shadow */
+            flex-shrink: 0; /* Prevent shrinking in flexbox */
+        }
+        .logo-container img {
+            max-width: 100%; /* Ensure image fits within container */
+            max-height: 100%; /* Ensure image fits within container */
+            object-fit: contain; /* Ensure full image is displayed */
+            border-radius: 0; /* Remove border-radius on image itself */
+        }
+
+        /* Custom styles for Quranic text */
+        .quran-arabic-text {
+            font-family: 'Noto Naskh Arabic', 'Scheherazade New', serif; /* Prioritize Naskh Arabic for Quranic script */
+            font-weight: 700; /* Ensure it's bold */
+            color: #FFFFFF; /* Default white color */
+            direction: rtl; /* Ensure Right-to-Left for Arabic text */
+            
+            /* New properties for single line and adjusted size */
+            font-size: 1.8rem; /* Adjusted for better fit on single line, slightly larger */
+            line-height: 1.5; /* Adjusted to a more typical value for Arabic */
+            display: flex; /* Use flexbox to align text and SVG */
+            align-items: center; /* Vertically center items */
+            justify-content: center; /* Horizontally center the content */
+            /* Removed white-space: nowrap; and overflow: hidden; */
+        }
+
+        /* Styles for individual words */
+        .quran-word {
+            color: #FFFFFF; /* Default color */
+            transition: color 0.4s ease-in-out; /* Smooth transition for color changes */
+        }
+
+        .quran-word.active-highlight {
+            color: #ff6b00; /* Orange for active word */
+        }
+
+        .quran-word.fade-highlight {
+            color: #22d3ee; /* Cyan for previously highlighted words */
+        }
+        
+        /* Styles for audio controls */
+        #audio-controls {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            z-index: 10;
+            opacity: 0; /* Hidden by default */
+            pointer-events: none; /* Not interactive when hidden */
+            transition: opacity 0.3s ease; /* Smooth fade for the container */
+            display: flex; /* Ensure flex for centering single button */
+            justify-content: center;
+            align-items: center;
+        }
+
+        /* Style for parent container to reveal controls on hover */
+        #quran-verse-container:hover #audio-controls {
+            opacity: 1;
+            pointer-events: auto;
+        }
+
+
+        .audio-control-button { /* Common style for both play/pause buttons */
+            background: linear-gradient(135deg, rgba(255, 107, 0, 0.7), rgba(34, 211, 238, 0.7)); /* Use main theme gradient */
+            color: white;
+            padding: 1.5rem; /* Larger touch area */
+            border-radius: 9999px; /* Circle */
+            box-shadow: 0 4px 15px rgba(0,0,0,0.3);
+            transition: all 0.3s ease; /* Smooth transition for scale/opacity */
+            transform: scale(0.8); /* Slightly smaller default */
+            opacity: 1; /* Always visible within its *parent* (#audio-controls) */
+            cursor: pointer;
+            border: none; /* Remove default button border */
+            margin: 0 0.5rem; /* Space between buttons if both are visible (though they won't be) */
+        }
+        .audio-control-button:hover {
+            transform: scale(1); /* Grow on hover */
+            box-shadow: 0 6px 20px rgba(0,0,0,0.4);
+        }
+
+        /* New styles for the combined personality box */
+        .personality-combined-box {
+            background: linear-gradient(135deg, rgba(34, 40, 49, 0.8), rgba(25, 29, 36, 0.8));
+            border: 2px solid rgba(255, 107, 0, 0.4); /* Border from previous left block */
+            border-radius: 2rem; /* Consistent with nav-block */
+            box-shadow: 0 10px 30px rgba(0,0,0,0.3), 0 0 20px rgba(255, 107, 0, 0.2);
+            padding: 2.5rem; /* Increased padding */
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            min-height: 20rem; /* Minimum height for better visual presence */
+        }
+
+        .personality-combined-box .personality-text-section {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 1.5rem; /* Space between "This is my..." and INTJ-T */
+            width: 100%; /* Ensure it takes full width */
+        }
+
+        .personality-combined-box .personality-text-section p {
+            font-size: 3rem; /* Keep existing font size */
+            line-height: 1.2; /* Adjust line height to try and fit into two lines */
+        }
+
+        .personality-combined-box .personality-type-display {
+            font-family: "Varela Round", sans-serif; /* Fallback for Myriad Pro */
+            font-size: 5rem; /* Larger font size */
+            line-height: 1; /* Single line */
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            white-space: nowrap; /* Keep on single line */
+            overflow: hidden; /* Hide overflow from animation */
+            padding: 0.5rem 0; /* Add some vertical padding */
+        }
+        
+        /* Base styles for character wrappers - animation properties will be added by JS */
+        .personality-combined-box .char-wrapper {
+            display: inline-block;
+            margin: 0 0.3rem; /* Tighter spacing */
+            opacity: 0; /* Start invisible, JS will toggle this */
+            font-weight: 900; /* Ensure INTJ-T is bold */
+        }
+
+        /* Keyframe animations for slot machine effect */
+        @keyframes slideFromTop {
+            0% { transform: translateY(-100px); opacity: 0; }
+            70% { transform: translateY(10px); opacity: 1; }
+            100% { transform: translateY(0); opacity: 1; }
+        }
+
+        @keyframes slideFromBottom {
+            0% { transform: translateY(100px); opacity: 0; }
+            70% { transform: translateY(-10px); opacity: 1; }
+            100% { transform: translateY(0); opacity: 1; }
+        }
+
+        /* New classes to trigger animations, applied by JS */
+        .slide-down-active {
+            animation-name: slideFromTop;
+            animation-duration: 1.2s; /* Slower animation for smoothness */
+            animation-timing-function: cubic-bezier(0.68, -0.55, 0.27, 1.55); /* Smooth settling effect */
+            animation-fill-mode: forwards; /* Keep final state */
+        }
+
+        .slide-up-active {
+            animation-name: slideFromBottom;
+            animation-duration: 1.2s; /* Slower animation for smoothness */
+            animation-timing-function: cubic-bezier(0.68, -0.55, 0.27, 1.55); /* Smooth settling effect */
+            animation-fill-mode: forwards; /* Keep final state */
+        }
+
+        /* Media query for smaller screens on personality section */
+        @media (max-width: 768px) {
+            .personality-combined-box {
+                padding: 1.5rem;
+                min-height: 15rem; /* Adjusted min-height for mobile */
+            }
+            .personality-combined-box .personality-text-section p {
+                font-size: 2.25rem; /* Adjust font size for heading on mobile */
+                line-height: 1.1; /* Further adjust for two lines on smaller screens */
+            }
+            .personality-combined-box .personality-type-display {
+                font-size: 3.5rem; /* Adjusted for letters on mobile, make it larger */
+            }
+            .personality-combined-box .char-wrapper {
+                margin: 0 0.2rem; /* Even tighter spacing on mobile */
+            }
+        }
+
+        /* Books Carousel Styles */
+        .carousel-container {
+            position: relative;
+            width: 100%;
+            max-width: 800px;
+            margin: 2rem auto;
+            overflow: hidden;
+            border-radius: 1rem;
+            background: rgba(34, 40, 49, 0.8);
+            /* Removed border as requested: border: 2px solid rgba(34, 211, 238, 0.4); */
+            box-shadow: 0 10px 30px rgba(0,0,0,0.3), 0 0 20px rgba(34, 211, 238, 0.2);
+            cursor: pointer; /* Indicates interactivity */
+            /* Removed padding as requested: padding: 1rem; */
+        }
+
+        .carousel-track {
+            display: flex;
+            /* Use CSS variables for animation properties */
+            animation: scroll-books var(--carousel-animation-duration) linear infinite;
+            animation-direction: reverse; /* New: for left-to-right visual scroll (content moves right) */
+            /* Removed padding as requested: padding: 1rem; */
+            /* Default values for the CSS variables */
+            --carousel-animation-duration: 30s; 
+            --carousel-translate-x: -2700px; /* (250px item width + 2rem/32px margin-right) * 10 items */
+        }
+
+        .carousel-container:hover .carousel-track {
+            animation-play-state: paused;
+        }
+
+        .carousel-item {
+            flex: 0 0 auto; /* Do not grow, do not shrink, auto width */
+            width: 250px; /* Fixed width for each book item */
+            margin-right: 2rem; /* Space between books */
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 0.75rem;
+            padding: 1.5rem;
+            text-align: center;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            border: 1px solid rgba(255, 107, 0, 0.3);
+            transition: transform 0.3s ease;
+        }
+
+        .carousel-item:hover {
+            transform: translateY(-5px);
+        }
+
+        .carousel-item h4 {
+            font-size: 1.25rem;
+            font-weight: 700;
+            color: #22d3ee; /* Cyan for book titles */
+            margin-bottom: 0.5rem;
+            line-height: 1.3;
+        }
+
+        .carousel-item p {
+            font-size: 0.95rem;
+            color: #ccc;
+        }
+
+        /* Duplicate the track for seamless loop effect */
+        .carousel-track.is-cloned {
+            /* This class is now primarily for identifying cloned items, animation is on parent */
+        }
+
+        @keyframes scroll-books {
+            0% { transform: translateX(0); }
+            100% { transform: translateX(var(--carousel-translate-x)); } /* Use CSS variable (negative value) */
+        }
+        
+        /* Pause/Play button for carousel - Removed as requested */
+        .carousel-controls {
+            display: none; /* Hide these controls */
+        }
+
+        /* Responsive adjustments for carousel */
+        @media (max-width: 640px) {
+            .carousel-item {
+                width: 200px; /* Smaller width for mobile */
+                margin-right: 1.5rem;
+            }
+            .carousel-item h4 {
+                font-size: 1.1rem;
+            }
+            .carousel-item p {
+                font-size: 0.85rem;
+            }
+            /* Adjust translateX for mobile. Recalculated for 200px width + 1.5rem/24px margin = 224px per item */
+            /* This will be handled dynamically in JS based on actual width */
+        }
+
+    </style>
+</head>
+<body>
+
+    <div class="background-image-container"></div>
+
+    <div class="page-container" id="page-container">
+
+        <section id="home" class="page-section bg-gradient-to-br from-indigo-900/20 to-blue-900/20 active">
+            <div class="content-wrapper">
+                <div id="landing-content" class="w-full max-w-5xl mx-auto flex-grow flex flex-col justify-center items-center py-8">
+
+                    <div class="flex flex-col md:flex-row items-center justify-center gap-8 md:gap-12">
+                        <div id="profile-pic-container" class="relative rounded-2xl px-0 py-2 bg-black/20">
+                            <img id="profile-pic" src="https://raw.githubusercontent.com/AhyenSM/profile-images/main/Portrait_LinkedIn_jpg(1)(1).png" alt="Ahyen Samrial Mostofa" class="rounded-xl w-auto md:w-auto h-80 md:h-96 object-cover object-top">
+                        </div>
+                        <div class="relative text-center md:text-left">
+                               <div id="arrow-pointer" class="hidden md:block">
+                                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
+                                        <path stroke-linecap="round" stroke-linejoin="round" d="M9.813 15.904L9 18.75l-.813-2.846a4.5 4.5 0 00-3.09-3.09L2.25 12l2.846-.813a4.5 4.5 0 003.09 3.09L15.75 12l-2.846.813a4.5 4.5 0 00-3.09 3.09z" />
+                                        <path stroke-linecap="round" stroke-linejoin="round" d="M18.25 18.25L18 21l-.25-2.75a.75.75 0 01.096-.343L18.25 18.25zM12 2.25L11.75 5l-.25-2.75a.75.75 0 01.096-.343L12 2.25z" />
+                                    </svg>
+                                </div>
+                            <p class="text-2xl text-gray-300 font-medium">This is</p>
+                            <h1 class="text-7xl lg:text-8xl font-black text-white mt-2 tracking-tight">
+                                Ahyen<br>Samrial<br>Mostofa
+                            </h1>
+                        </div>
+                    </div>
+
+                    <div class="text-center mt-12">
+                        <p id="typing-effect" class="text-4xl md:text-5xl font-black bg-gradient-to-r from-orange-400 via-pink-500 to-cyan-400 bg-clip-text text-transparent leading-relaxed min-h-16">
+                            <span>I'm </span>
+                            <span id="typing-text"></span>
+                            <span class="typing-cursor"></span>
+                        </p>
+                    </div>
+
+                    <div class="mt-20 text-center">
+                               <div class="flex justify-center flex-wrap gap-8">
+                                   <div id="show-personal-btn" class="nav-block">Get to<br>know me<br>personally</div>
+                                   <div id="show-academics-btn" class="nav-block">Discover my<br>academics<br>and awards</div>
+                                   <div id="show-professional-btn" class="nav-block">Learn about my<br>professional<br>self</div>
+                               </div>
+                               <div class="mt-16">
+                                    <p class="mb-6 text-gray-300 text-lg font-medium">Or connect with me</p>
+                                    <form id="email-submit-form" class="flex flex-col justify-center items-center gap-3 max-w-lg mx-auto">
+                                           <input type="email" name="email" placeholder="Drop your email..." class="bg-gray-900/30 border-2 border-orange-500/30 rounded-full px-6 py-3 focus:outline-none focus:ring-2 focus:ring-orange-500 focus:border-orange-500 w-full sm:w-72 transition text-white placeholder-gray-400" required>
+                                           <textarea id="message-slot" name="message" placeholder="Add a message (optional)" maxlength="100" class="bg-gray-900/30 border-2 border-orange-500/30 rounded-full px-6 py-3 focus:outline-none focus:ring-2 focus:ring-orange-500 focus:border-orange-500 w-full sm:w-72 transition-all duration-300 ease-in-out text-white placeholder-gray-400 resize-none overflow-hidden h-12"></textarea>
+                                           <button type="submit" class="bg-gradient-to-r from-orange-500 to-pink-500 hover:from-orange-600 hover:to-pink-600 text-white font-bold py-3 px-8 rounded-full transition transform hover:scale-105 w-full sm:w-auto shadow-lg">Submit</button>
+                                    </form>
+                                    <div id="form-message" class="hidden"></div>
+                               </div>
+                    </div>
+
+                </div>
+                <footer class="w-full">
+                    <div class="flex justify-center space-x-8">
+                        <a href="https://www.instagram.com/ahyensamrialostofa/" target="_blank" rel="noopener noreferrer" class="text-gray-300 hover:text-orange-400 transition-all duration-300 transform hover:scale-110">
+                            <i class="fab fa-instagram fa-3x"></i>
+                        </a>
+                        <a href="https://www.linkedin.com/in/ahyensm/" target="_blank" rel="noopener noreferrer" class="text-gray-300 hover:text-cyan-400 transition-all duration-300 transform hover:scale-110">
+                            <i class="fab fa-linkedin-in fa-3x"></i>
+                        </a>
+                        <a href="https://x.com/AhyenMostofa" target="_blank" rel="noopener noreferrer" class="text-gray-300 hover:text-pink-400 transition-all duration-300 transform hover:scale-110">
+                            <i class="fab fa-x-twitter fa-3x"></i>
+                        </a>
+                        <a href="https://github.com/AhyenSM" target="_blank" rel="noopener noreferrer" class="text-gray-300 hover:text-gray-500 transition-all duration-300 transform hover:scale-110">
+                            <i class="fab fa-github fa-3x"></i>
+                        </a>
+                        <a href="https://wa.me/97466439780?text=hi%2C%20i%27m%20interested%20to%20connect%20with%20you" target="_blank" rel="noopener noreferrer" class="text-gray-300 hover:text-green-500 transition-all duration-300 transform hover:scale-110">
+                            <i class="fab fa-whatsapp fa-3x"></i>
+                        </a>
+                        <a href="https://www.pinterest.com/ahyenmostofa/" target="_blank" rel="noopener noreferrer" class="text-gray-300 hover:text-red-600 transition-all duration-300 transform hover:scale-110">
+                            <i class="fab fa-pinterest fa-3x"></i>
+                        </a>
+                        <a href="mailto:ahyen-samrial-mostofa@outlook.com" class="text-gray-300 hover:text-green-400 transition-all duration-300 transform hover:scale-110">
+                            <i class="fas fa-envelope fa-3x"></i>
+                        </a>
+                    </div>
+                    <p class="mt-6 text-base text-gray-400 font-medium">ahyen-samrial-mostofa@outlook.com</p>
+                    <p class="mt-2 text-base text-gray-400 font-medium">&copy; 2025 Ahyen Samrial Mostofa. All rights reserved.</p>
+                </footer>
+            </div>
+        </section>
+
+        <section id="personal" class="page-section bg-gradient-to-br from-purple-900/20 to-blue-900/20">
+            <div class="content-wrapper">
+                <div id="quran-verse-container" class="relative max-w-4xl mx-auto text-center mb-10 p-6 rounded-xl bg-gray-800/60 border border-purple-500/40 shadow-lg group"> <!-- Added 'group' class back -->
+                    <audio id="quran-recitation" src="https://raw.githubusercontent.com/AhyenSM/profile-images/main/AbdulBasit6.162.mp3"></audio>
+                    <div id="audio-controls">
+                        <button id="audio-play-button" class="audio-control-button">
+                            <i class="fas fa-play"></i>
+                        </button>
+                        <button id="audio-pause-button" class="audio-control-button hidden">
+                            <i class="fas fa-pause"></i>
+                        </button>
+                    </div>
+                    <!-- Modified Arabic text display for smaller font and single line, with corrected text -->
+                    <p id="quran-arabic-display" class="quran-arabic-text font-extrabold text-white mb-4" dir="rtl">
+                        <!-- Arabic words will be dynamically inserted here -->
+                    </p>
+                    <p class="text-base sm:text-lg md:text-xl text-gray-300 font-medium leading-relaxed">
+                        Say, "Indeed, my prayer, my rites of sacrifice, my living and my dying are for Allah, Lord of the worlds."
+                    </p>
+                    <p class="text-sm text-gray-400 mt-2">
+                        — Quran 6:162
+                    </p>
+                    <p class="text-sm text-gray-400">
+                        Recited by Sh. Abdul Basit 'Abd us-Samad
+                    </p>
+                    <span id="audio-error-message" class="text-red-400 text-sm mt-2 hidden"></span>
+                </div>
+
+                <!-- Moved buttons section outside quran-verse-container -->
+                <div class="flex flex-col sm:flex-row justify-center items-center gap-6 mt-6 w-full max-w-lg mx-auto">
+                    <a href="https://quran.com/" target="_blank" rel="noopener noreferrer" class="inline-block bg-gradient-to-r from-purple-600 to-indigo-600 hover:from-purple-700 hover:to-indigo-700 text-white font-extrabold py-4 px-8 rounded-full transition transform hover:scale-105 shadow-lg w-full sm:w-auto text-center text-xl">
+                        Explore the Holy Quran
+                    </a>
+                    <a href="https://drive.google.com/file/d/1YesBg1wNlKnK0IFjAlGWtympJTipvaYb/view?usp=sharing" target="_blank" rel="noopener noreferrer" class="inline-block bg-gradient-to-r from-purple-600 to-indigo-600 hover:from-purple-700 hover:to-indigo-700 text-white font-extrabold py-4 px-8 rounded-full transition transform hover:scale-105 shadow-lg w-full sm:w-auto text-center text-xl">
+                        Why Islam?
+                    </a>
+                </div>
+                <p class="text-lg sm:text-xl md:text-2xl text-gray-200 w-full max-w-5xl text-center mx-auto font-medium leading-relaxed mt-10">
+                    Welcome to my personal corner! Beyond my professional life, I'm a passionate individual who enjoys a variety of activities. You'll often find me <strong class="bg-gradient-to-r from-orange-400 to-pink-400 bg-clip-text text-transparent">immersed in non-fictional books</strong>, challenging myself with a refreshing <strong class="bg-gradient-to-r from-cyan-400 to-blue-400 bg-clip-text text-transparent">swim</strong>, or exploring flavors through <strong class="bg-gradient-to-r from-green-400 to-yellow-400 bg-clip-text text-transparent">simple cooking & eating</strong>. When I'm not immersed in tech, you can find me hiking local trails or experimenting with new recipes in the kitchen. Let's connect if we share similar passions!
+                </p>
+
+                <!-- NEW PERSONALITY SECTION - COMBINED INTO A SINGLE BOX -->
+                <div class="personality-section-container w-full max-w-4xl mx-auto flex justify-center items-center gap-8 mt-12 mb-12">
+                    <div class="personality-combined-box w-full max-w-2xl mx-auto relative">
+                        <div class="personality-text-section">
+                            <!-- Adjusted heading text and removed optional line break -->
+                            <p class="text-3xl sm:text-4xl lg:text-5xl font-black text-white leading-tight">My Personality Type</p>
+                        </div>
+                        <div class="personality-type-display">
+                            <span class="char-wrapper inline-block bg-gradient-to-r from-orange-400 via-pink-500 to-cyan-400 bg-clip-text text-transparent drop-shadow-2xl">I</span>
+                            <span class="char-wrapper inline-block bg-gradient-to-r from-orange-400 via-pink-500 to-cyan-400 bg-clip-text text-transparent drop-shadow-2xl">N</span>
+                            <span class="char-wrapper inline-block bg-gradient-to-r from-orange-400 via-pink-500 to-cyan-400 bg-clip-text text-transparent drop-shadow-2xl">T</span>
+                            <span class="char-wrapper inline-block bg-gradient-to-r from-orange-400 via-pink-500 to-cyan-400 bg-clip-text text-transparent drop-shadow-2xl">J</span>
+                            <span class="char-wrapper inline-block bg-gradient-to-r from-orange-400 via-pink-500 to-cyan-400 bg-clip-text text-transparent drop-shadow-2xl">-</span>
+                            <span class="char-wrapper inline-block bg-gradient-to-r from-orange-400 via-pink-500 to-cyan-400 bg-clip-text text-transparent drop-shadow-2xl">T</span>
+                        </div>
+                        <a href="https://www.16personalities.com/profiles/intj-t/m/2hd51qi5t" target="_blank" rel="noopener noreferrer" class="bg-gradient-to-r from-orange-500 to-pink-500 hover:from-orange-600 hover:to-pink-600 text-white font-bold py-3 px-8 rounded-full transition transform hover:scale-105 shadow-lg text-lg mt-4">
+                            Learn More
+                        </a>
+                    </div>
+                </div>
+                <!-- END NEW PERSONALITY SECTION -->
+
+                <!-- Books I Recommend Section -->
+                <div class="books-recommend-section w-full max-w-4xl mx-auto text-center mt-12 mb-12">
+                    <h3 class="text-4xl sm:text-5xl font-black mb-8 text-center bg-gradient-to-r from-cyan-400 to-orange-400 bg-clip-text text-transparent">Books I Recommend</h3>
+                    <div class="carousel-container" id="book-carousel-container">
+                        <div class="carousel-track" id="book-carousel-track">
+                            <!-- Book 1 -->
+                            <div class="carousel-item">
+                                <h4>The Noble Qur’an</h4>
+                                <p>Muhsin Khan</p>
+                            </div>
+                            <!-- Book 2 -->
+                            <div class="carousel-item">
+                                <h4>The Spiritual Disease and the Cure</h4>
+                                <p>Ibn Al Qayyim</p>
+                            </div>
+                            <!-- Book 3 -->
+                            <div class="carousel-item">
+                                <h4>Atomic Habits</h4>
+                                <p>James Clear</p>
+                            </div>
+                            <!-- Book 4 -->
+                            <div class="carousel-item">
+                                <h4>Islamic Finance: Why It Makes Sense</h4>
+                                <p>Daud Vicary & Keon Chee</p>
+                            </div>
+                            <!-- Book 5 -->
+                            <div class="carousel-item">
+                                <h4>Rich Dad Poor Dad</h4>
+                                <p>Robert Kiyosaki</p>
+                            </div>
+                            <!-- Book 6 -->
+                            <div class="carousel-item">
+                                <h4>IKIGAI</h4>
+                                <p>Héctor García & Francesc Miralles</p>
+                            </div>
+                            <!-- Book 7 -->
+                            <div class="carousel-item">
+                                <h4>Can’t Hurt Me</h4>
+                                <p>David Goggins</p>
+                            </div>
+                            <!-- Book 8 -->
+                            <div class="carousel-item">
+                                <h4>The Power of Habit</h4>
+                                <p>Charles Duhigg</p>
+                            </div>
+                            <!-- Book 9 -->
+                            <div class="carousel-item">
+                                <h4>The Psychology of Money</h4>
+                                <p>Morgan Housel</p>
+                            </div>
+                            <!-- Book 10 -->
+                            <div class="carousel-item">
+                                <h4>Unapologetically Ambitious</h4>
+                                <p>Shellye Archambeau</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!-- End Books I Recommend Section -->
+
+                <button class="back-to-home nav-block mt-16 w-auto h-auto text-xl !py-4 !px-8 font-bold">← Go Back</button>
+            
+                <!-- Social Footer for Personal page - MOVED INSIDE content-wrapper -->
+                <footer class="w-full mt-16"> <!-- Added mt-16 for spacing, adjust as needed -->
+                    <div class="flex justify-center space-x-8">
+                        <a href="https://www.instagram.com/ahyensamrialostofa/" target="_blank" rel="noopener noreferrer" class="text-gray-300 hover:text-orange-400 transition-all duration-300 transform hover:scale-110">
+                            <i class="fab fa-instagram fa-3x"></i>
+                        </a>
+                        <a href="https://www.linkedin.com/in/ahyensm/" target="_blank" rel="noopener noreferrer" class="text-gray-300 hover:text-cyan-400 transition-all duration-300 transform hover:scale-110">
+                            <i class="fab fa-linkedin-in fa-3x"></i>
+                        </a>
+                        <a href="https://x.com/AhyenMostofa" target="_blank" rel="noopener noreferrer" class="text-gray-300 hover:text-pink-400 transition-all duration-300 transform hover:scale-110">
+                            <i class="fab fa-x-twitter fa-3x"></i>
+                        </a>
+                        <a href="https://github.com/AhyenSM" target="_blank" rel="noopener noreferrer" class="text-gray-300 hover:text-gray-500 transition-all duration-300 transform hover:scale-110">
+                            <i class="fab fa-github fa-3x"></i>
+                        </a>
+                        <a href="https://wa.me/97466439780?text=hi%2C%20i%27m%20interested%20to%20connect%20with%20you" target="_blank" rel="noopener noreferrer" class="text-gray-300 hover:text-green-500 transition-all duration-300 transform hover:scale-110">
+                            <i class="fab fa-whatsapp fa-3x"></i>
+                        </a>
+                        <a href="https://www.pinterest.com/ahyenmostofa/" target="_blank" rel="noopener noreferrer" class="text-gray-300 hover:text-red-600 transition-all duration-300 transform hover:scale-110">
+                            <i class="fab fa-pinterest fa-3x"></i>
+                        </a>
+                        <a href="mailto:ahyen-samrial-mostofa@outlook.com" class="text-gray-300 hover:text-green-400 transition-all duration-300 transform hover:scale-110">
+                            <i class="fas fa-envelope fa-3x"></i>
+                        </a>
+                    </div>
+                    <p class="mt-6 text-base text-gray-400 font-medium">ahyen-samrial-mostofa@outlook.com</p>
+                    <p class="mt-2 text-base text-gray-400 font-medium">&copy; 2025 Ahyen Samrial Mostofa. All rights reserved.</p>
+                </footer>
+            </div>
+        </section>
+
+        <section id="professional" class="page-section bg-gradient-to-bl from-cyan-900/20 to-orange-900/20">
+            <div class="content-wrapper">
+                <div class="w-full max-w-4xl mx-auto flex-grow flex flex-col justify-start items-center py-8">
+                    <h2 class="text-5xl sm:text-6xl lg:text-7xl font-black mb-6 sm:mb-8 text-center bg-gradient-to-r from-cyan-400 to-orange-400 bg-clip-text text-transparent">Professional Self</h2>
+                    <p class="text-lg sm:text-xl text-gray-200 max-w-3xl text-center font-medium leading-relaxed mb-8 sm:mb-12">
+                        As an Electrical Engineering graduate specializing in Automation & Control Systems,
+                        my journey has encompassed diverse roles from <strong class="text-cyan-400">Operations & Marketing</strong> to <strong class="text-orange-400">Customer Experience Consultancy</strong>.
+                        I bring a blend of technical expertise, problem-solving skills, and a commitment to innovation, as detailed in my extensive work history and skill set.
+                    </p>
+
+                    <a href="https://drive.google.com/file/d/1kIHAwpFp8kh2cYuZfuRTIlK0zIyE_q9b/view?usp=sharing" target="_blank" rel="noopener noreferrer" class="mb-12 bg-gradient-to-r from-orange-500 to-pink-500 hover:from-orange-600 hover:to-pink-600 text-white font-bold py-4 px-12 text-xl sm:text-2xl rounded-full transition transform hover:scale-105 w-full sm:w-auto text-center shadow-lg">
+                        Download/View My CV (PDF)
+                    </a>
+
+                    <h3 class="text-4xl sm:text-5xl font-black mt-16 mb-10 text-center bg-gradient-to-r from-purple-400 to-blue-400 bg-clip-text text-transparent">Work Experience</h3>
+                    <div class="timeline">
+                        <div class="timeline-item left current-experience">
+                            <div class="timeline-content-wrapper">
+                                <div class="timeline-content">
+                                    <h3>Operations and Marketing Assistant</h3>
+                                    <p><strong class="text-orange-400">AiScia Informatics LLC.</strong>, Qatar</p>
+                                    <p>Providing operational, administrative, and marketing support.</p>
+                                </div>
+                            </div>
+                            <div class="timeline-date-wrapper">
+                                <small>May 2025 - Present</small>
+                            </div>
+                        </div>
+                        <div class="timeline-item right">
+                            <div class="timeline-date-wrapper">
+                                <small>Jan 2025 - May 2025</small>
+                            </div>
+                            <div class="timeline-content-wrapper">
+                                <div class="timeline-content">
+                                    <h3>Operations and Product development Intern [Part Time]</h3>
+                                    <p><strong class="text-orange-400">AiScia Informatics LLC.</strong>, Qatar</p>
+                                    <p>Assisted in operational support and product testing.</p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="timeline-item left">
+                            <div class="timeline-content-wrapper">
+                                <div class="timeline-content">
+                                    <h3>Robotics Teacher [Part Time]</h3>
+                                    <p><strong class="text-orange-400">Bricklyn Lego Education</strong>, Duhail - Qatar</p>
+                                    <p>Developed and delivered robotics lessons.</p>
+                                </div>
+                            </div>
+                            <div class="timeline-date-wrapper">
+                                <small>Jan 2025 - May 2025</small>
+                            </div>
+                        </div>
+                        <div class="timeline-item right">
+                            <div class="timeline-date-wrapper">
+                                <small>Nov 2024</small>
+                            </div>
+                            <div class="timeline-content-wrapper">
+                                <div class="timeline-content">
+                                    <h3>Customer Service, Operational and User Experience Consultancy [Short Term]</h3>
+                                    <p><strong class="text-orange-400">University of Doha for Science and Technology</strong>, Duhail - Qatar</p>
+                                    <p>Managed E-Gaming Arena operations and user engagement.</p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="timeline-item left">
+                            <div class="timeline-content-wrapper">
+                                <div class="timeline-content">
+                                    <h3>Sports and Wellness Student Admin Assistant [Part Time]</h3>
+                                    <p><strong class="text-orange-400">University of Doha for Science and Technology</strong>, Duhail - Qatar</p>
+                                    <p>Assisted in management operations and budgeting.</p>
+                                </div>
+                            </div>
+                            <div class="timeline-date-wrapper">
+                                <small>Jul 2022 - Sep 2024</small>
+                            </div>
+                        </div>
+                         <div class="timeline-item right">
+                            <div class="timeline-date-wrapper">
+                                <small>May 2023 - Jul 2023</small>
+                            </div>
+                            <div class="timeline-content-wrapper">
+                                <div class="timeline-content">
+                                    <h3>Electrical Engineering Project Manager [Internship]</h3>
+                                    <p><strong class="text-orange-400">University of Doha for Science and Technology</strong>, Duhail - Qatar</p>
+                                    <p>Managed lighting simulation and analysis projects.</p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="timeline-item left">
+                            <div class="timeline-content-wrapper">
+                                <div class="timeline-content">
+                                    <h3>Project Coordinator/Document Controller</h3>
+                                    <p><strong class="text-orange-400">Twelvers Trading and Contracting</strong>, Doha - Qatar</p>
+                                    <p>Managed and maintained HR documentation.</p>
+                                </div>
+                            </div>
+                            <div class="timeline-date-wrapper">
+                                <small>Aug 2021 - Jan 2022</small>
+                            </div>
+                        </div>
+                        <div class="timeline-item right">
+                            <div class="timeline-date-wrapper">
+                                <small>Apr 2021 - Jul 2021</small>
+                            </div>
+                            <div class="timeline-content-wrapper">
+                                <div class="timeline-content">
+                                    <h3>Home Automation Technician [Part Time]</h3>
+                                    <p><strong class="text-orange-400">Tech It Easy</strong>, Lusail - Qatar</p>
+                                    <p>Configured smart home devices and provided demonstrations.</p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="timeline-item left">
+                            <div class="timeline-content-wrapper">
+                                <div class="timeline-content">
+                                    <h3>Peer Tutor [Part Time]</h3>
+                                    <p><strong class="text-orange-400">College of the North Atlantic-Qatar</strong>, Duhail - Qatar</p>
+                                    <p>Tutored students in various engineering courses.</p>
+                                </div>
+                            </div>
+                            <div class="timeline-date-wrapper">
+                                <small>Dec 2018 - Aug 2019</small>
+                            </div>
+                        </div>
+                        <div class="timeline-item right">
+                            <div class="timeline-date-wrapper">
+                                <small>Jan 2018 - May 2018</small>
+                            </div>
+                            <div class="timeline-content-wrapper">
+                                <div class="timeline-content">
+                                    <h3>IELTS Invigilator [Part Time]</h3>
+                                    <p><strong class="text-orange-400">IDP IELTS College of the North Atlantic-Qatar</strong>, Duhail - Qatar</p>
+                                    <p>Assisted with exam invigilation and document handling.</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <h3 class="text-4xl sm:text-5xl font-black mt-16 mb-8 text-center bg-gradient-to-r from-green-400 to-lime-400 bg-clip-text text-transparent">Skills & Abilities</h3>
+                    <div class="flex flex-wrap justify-center gap-4 text-lg sm:text-xl max-w-4xl px-4 text-center mb-12">
+                        <span class="skill-tag px-4 py-2 rounded-full bg-blue-700/30 border border-blue-500/50 whitespace-nowrap">MS Office (Word, Excel, PowerPoint, Outlook, OneDrive, Sharepoint, Project, Visio & Forms)</span>
+                        <span class="skill-tag px-4 py-2 rounded-full bg-green-700/30 border border-green-500/50 whitespace-nowrap">AutoCAD Electrical</span>
+                        <span class="skill-tag px-4 py-2 rounded-full bg-yellow-700/30 border border-yellow-500/50 whitespace-nowrap">Rockwell Software Studio 5000</span>
+                        <span class="skill-tag px-4 py-2 rounded-full bg-pink-700/30 border border-pink-500/50 whitespace-nowrap">Factory Talk</span>
+                        <span class="skill-tag px-4 py-2 rounded-full bg-cyan-700/30 border border-cyan-500/50 whitespace-nowrap">MATLAB</span>
+                        <span class="skill-tag px-4 py-2 rounded-full bg-purple-700/30 border border-purple-500/50 whitespace-nowrap">Festo FluidSim Pneumatics</span>
+                        <span class="skill-tag px-4 py-2 rounded-full bg-orange-700/30 border border-orange-500/50 whitespace-nowrap">DiaLux</span>
+                        <span class="skill-tag px-4 py-2 rounded-full bg-teal-700/30 border border-teal-500/50 whitespace-nowrap">Arduino IDE</span>
+                        <span class="skill-tag px-4 py-2 rounded-full bg-red-700/30 border border-red-500/50 whitespace-nowrap">Spyder IDE</span>
+                        <span class="skill-tag px-4 py-2 rounded-full bg-indigo-700/30 border border-indigo-500/50 whitespace-nowrap">Jupyter IDE</span>
+                        <span class="skill-tag px-4 py-2 rounded-full bg-fuchsia-700/30 border border-fuchsia-500/50 whitespace-nowrap">Vectr</span>
+                        <span class="skill-tag px-4 py-2 rounded-full bg-lime-700/30 border border-lime-500/50 whitespace-nowrap">PLC (Ladder Logic and Function Block)</span>
+                        <span class="skill-tag px-4 py-2 rounded-full bg-rose-700/30 border border-rose-500/50 whitespace-nowrap">Python</span>
+                        <span class="skill-tag px-4 py-2 rounded-full bg-amber-700/30 border border-amber-500/50 whitespace-nowrap">C++</span>
+                        <span class="skill-tag px-4 py-2 rounded-full bg-fuchsia-700/30 border border-fuchsia-500/50 whitespace-nowrap">Arduino</span>
+                        <span class="skill-tag px-4 py-2 rounded-full bg-sky-700/30 border border-sky-500/50 whitespace-nowrap">Design Thinking</span>
+                        <span class="skill-tag px-4 py-2 rounded-full bg-emerald-700/30 border border-emerald-500/50 whitespace-nowrap">Business Modeling</span>
+                        <span class="skill-tag px-4 py-2 rounded-full bg-violet-700/30 border border-violet-500/50 whitespace-nowrap">Peer Tutoring</span>
+                        <span class="skill-tag px-4 py-2 rounded-full bg-cyan-700/30 border border-cyan-500/50 whitespace-nowrap">Thesis Writing</span>
+                        <span class="skill-tag px-4 py-2 rounded-full bg-purple-700/30 border border-purple-500/50 whitespace-nowrap">Jotform</span>
+                    </div>
+
+                    <button class="back-to-home nav-block mt-16 w-auto h-auto text-xl !py-4 !px-8 font-bold">← Go Back</button>
+                </div>
+                <!-- Footer added here -->
+                <footer class="w-full mt-16">
+                    <div class="flex justify-center space-x-8">
+                        <a href="https://www.instagram.com/ahyensamrialostofa/" target="_blank" rel="noopener noreferrer" class="text-gray-300 hover:text-orange-400 transition-all duration-300 transform hover:scale-110">
+                            <i class="fab fa-instagram fa-3x"></i>
+                        </a>
+                        <a href="https://www.linkedin.com/in/ahyensm/" target="_blank" rel="noopener noreferrer" class="text-gray-300 hover:text-cyan-400 transition-all duration-300 transform hover:scale-110">
+                            <i class="fab fa-linkedin-in fa-3x"></i>
+                        </a>
+                        <a href="https://x.com/AhyenMostofa" target="_blank" rel="noopener noreferrer" class="text-gray-300 hover:text-pink-400 transition-all duration-300 transform hover:scale-110">
+                            <i class="fab fa-x-twitter fa-3x"></i>
+                        </a>
+                        <a href="https://github.com/AhyenSM" target="_blank" rel="noopener noreferrer" class="text-gray-300 hover:text-gray-500 transition-all duration-300 transform hover:scale-110">
+                            <i class="fab fa-github fa-3x"></i>
+                        </a>
+                        <a href="https://wa.me/97466439780?text=hi%2C%20i%27m%20interested%20to%20connect%20with%20you" target="_blank" rel="noopener noreferrer" class="text-gray-300 hover:text-green-500 transition-all duration-300 transform hover:scale-110">
+                            <i class="fab fa-whatsapp fa-3x"></i>
+                        </a>
+                        <a href="https://www.pinterest.com/ahyenmostofa/" target="_blank" rel="noopener noreferrer" class="text-gray-300 hover:text-red-600 transition-all duration-300 transform hover:scale-110">
+                            <i class="fab fa-pinterest fa-3x"></i>
+                        </a>
+                        <a href="mailto:ahyen-samrial-mostofa@outlook.com" class="text-gray-300 hover:text-green-400 transition-all duration-300 transform hover:scale-110">
+                            <i class="fas fa-envelope fa-3x"></i>
+                        </a>
+                    </div>
+                    <p class="mt-6 text-base text-gray-400 font-medium">ahyen-samrial-mostofa@outlook.com</p>
+                    <p class="mt-2 text-base text-gray-400 font-medium">&copy; 2025 Ahyen Samrial Mostofa. All rights reserved.</p>
+                </footer>
+            </div>
+        </section>
+
+        <section id="academics" class="page-section bg-gradient-to-br from-green-900/20 to-lime-900/20">
+            <div class="content-wrapper">
+                <div class="w-full max-w-4xl mx-auto flex-grow flex flex-col justify-start items-center py-8">
+                    <h2 class="text-5xl sm:text-6xl lg:text-7xl font-black mb-6 sm:mb-8 text-center bg-gradient-to-r from-green-400 to-teal-400 bg-clip-text text-transparent">Academics & Awards</h2>
+
+                    <p class="text-lg sm:text-xl text-gray-200 max-w-3xl text-center font-medium leading-relaxed mb-8 sm:mb-12">
+                        My academic journey has been dedicated to Electrical Engineering, with a strong focus on <strong class="text-green-400">Automation & Control Systems</strong>.
+                        This section highlights my <strong class="text-lime-400">degrees</strong>, significant <strong class="text-cyan-400">publications</strong>, notable <strong class="text-orange-400">awards</strong>, and relevant <strong class="text-purple-400">certifications</strong> earned through continuous learning and engagement in the field.
+                    </p>
+
+                    <a href="https://drive.google.com/file/d/1h8N612VM7wrFi8oT8ZXjDBG9ipjzSKIX/view?usp=sharing" target="_blank" rel="noopener noreferrer" class="mb-12 bg-gradient-to-r from-green-500 to-teal-500 hover:from-green-600 hover:to-teal-600 text-white font-bold py-4 px-12 text-xl sm:text-2xl rounded-full transition transform hover:scale-105 w-full sm:w-auto text-center shadow-lg">
+                        Download/View My Academic CV (PDF)
+                    </a>
+
+                    <h3 class="text-4xl sm:text-5xl font-black mt-16 mb-8 text-center bg-gradient-to-r from-blue-400 to-purple-400 bg-clip-text text-transparent">Education</h3>
+                    <div class="space-y-8 mb-12 w-full px-4">
+                        <div class="bg-gray-800/60 p-6 rounded-xl border border-blue-500/40 shadow-lg flex flex-col sm:flex-row justify-between items-start sm:items-center">
+                            <div class="flex items-center gap-4 mb-4 sm:mb-0">
+                                <div class="logo-container">
+                                    <img src="https://raw.githubusercontent.com/AhyenSM/profile-images/main/UDST%20V%20LOGO_Trans.png" alt="UDST Logo">
+                                </div>
+                                <div class="text-left">
+                                    <p class="text-xl font-bold text-blue-300">🎓 University of Doha for Science and Technology (UDST)</p>
+                                    <p class="text-lg text-gray-200">Bachelor of Science in Electrical Engineering</p>
+                                    <p class="text-md text-gray-400">Major: Automation and Control Systems Engineering - CGPA: 3.9</p>
+                                    <ul class="list-disc list-inside text-sm text-gray-400 mt-2 ml-4">
+                                        <li>Capstone Project: Vibration Fault Prediction using Machine Learning on Bently Nevada Vibration Trainer</li>
+                                        <li>Sustainability Project: Fabrication of Dye Sensitized Solar Cell (DSSC)</li>
+                                    </ul>
+                                </div>
+                            </div>
+                            <span class="text-lg font-semibold text-gray-300 text-right">Jan 2022 - May 2024</span>
+                        </div>
+
+                        <div class="bg-gray-800/60 p-6 rounded-xl border border-green-500/40 shadow-lg flex flex-col sm:flex-row justify-between items-start sm:items-center">
+                            <div class="flex items-center gap-4 mb-4 sm:mb-0">
+                                <div class="logo-container">
+                                    <img src="https://raw.githubusercontent.com/AhyenSM/profile-images/main/CNAQ-removebg-preview.png" alt="CNAQ Logo">
+                                </div>
+                                <div class="text-left">
+                                    <p class="text-xl font-bold text-green-300">📚 College of the North Atlantic-Qatar (CNAQ)</p>
+                                    <p class="text-lg text-gray-200">Advanced Diploma in Engineering Technology</p>
+                                    <p class="text-md text-gray-400">Major: Process Automation Engineering Technology (PAET) - CGPA: 4.0</p>
+                                    <ul class="list-disc list-inside text-sm text-gray-400 mt-2 ml-4">
+                                        <li>Capstone Project: Designing an HMI for Bently Nevada Vibration Trainer</li>
+                                    </ul>
+                                </div>
+                            </div>
+                            <span class="text-lg font-semibold text-gray-300 text-right">Sep 2017 - Jul 2020</span>
+                        </div>
+
+                        <div class="bg-gray-800/60 p-6 rounded-xl border border-yellow-500/40 shadow-lg flex flex-col sm:flex-row justify-between items-start sm:items-center">
+                            <div class="flex items-center gap-4 mb-4 sm:mb-0">
+                                <div class="logo-container">
+                                    <img src="https://raw.githubusercontent.com/AhyenSM/profile-images/main/SIS_Logo-removebg-preview.png" alt="Shantiniketan Indian School Logo">
+                                </div>
+                                <div class="text-left">
+                                    <p class="text-xl font-bold text-yellow-300">🏫 Shantiniketan Indian School</p>
+                                    <p class="text-lg text-gray-200">All India Senior Secondary Examination (AISSE) CBSE 2016</p>
+                                    <p class="text-md text-gray-400">Senior Secondary Examination (SSE) CBSE 2014</p>
+                                    <ul class="list-disc list-inside text-sm text-gray-400 mt-2 ml-4">
+                                        <li>Final Year Project: Wimshurst machine (Physics)</li>
+                                    </ul>
+                                </div>
+                            </div>
+                            <span class="text-lg font-semibold text-gray-300 text-right">Apr 2002 - May 2016</span>
+                        </div>
+                    </div>
+
+                    <h3 class="text-4xl sm:text-5xl font-black mt-16 mb-8 text-center bg-gradient-to-r from-pink-400 to-red-400 bg-clip-text text-transparent">Publications</h3>
+                    <div class="space-y-8 mb-12 w-full px-4">
+                        <div class="bg-gray-800/60 p-6 rounded-xl border border-red-500/40 shadow-lg">
+                            <p class="text-xl font-bold text-red-300">📄 A Deep Neural Network Approach for Fault Detection in Industrial Motors: Enhancing Reliability and Efficiency in Industry 4.0</p>
+                            <p class="text-lg text-gray-200 mt-2">IEEE HONET - Doha, Qatar, 03-05 December 2024</p>
+                            <p class="text-md text-gray-400">Date Added to IEEE Xplore: 07 January 2025</p>
+                            <p class="text-md text-gray-400">Publisher: IEEE</p>
+                            <a href="https://doi.org/10.1109/HONET63146.2024.10822897" target="_blank" rel="noopener noreferrer" class="text-cyan-400 hover:text-cyan-300 text-sm italic mt-2 block">
+                                DOI: 1.109/HONET63146.2024.10822897
+                            </a>
+                        </div>
+                    </div>
+
+                    <h3 class="text-4xl sm:text-5xl font-black mt-16 mb-8 text-center bg-gradient-to-r from-orange-400 to-yellow-400 bg-clip-text text-transparent">Awards & Achievements</h3>
+                    <div class="space-y-8 mb-12 w-full px-4">
+                        <div class="bg-gray-800/60 p-6 rounded-xl border border-orange-500/40 shadow-lg flex flex-col sm:flex-row justify-between items-start sm:items-center">
+                            <div class="text-left">
+                                <p class="text-xl font-bold text-orange-300">🏆 Skills Day Competitions Award Medals (UDST)</p>
+                                <ul class="list-disc list-inside text-lg text-gray-200 mt-2 ml-4">
+                                    <li>Solar RC Car [Silver] 🥈</li>
+                                    <li>Robot Line Follower [Bronze] 🥉</li>
+                                </ul>
+                            </div>
+                            <span class="text-lg font-semibold text-gray-300 mt-4 sm:mt-0 sm:text-right">Mar 2024</span>
+                        </div>
+
+                        <div class="bg-gray-800/60 p-6 rounded-xl border border-purple-500/40 shadow-lg flex flex-col sm:flex-row justify-between items-start sm:items-center">
+                            <div class="text-left">
+                                <p class="text-xl font-bold text-purple-300">🏅 Student Employment Award - Student Recognition Awards 2023 (UDST)</p>
+                            </div>
+                            <span class="text-lg font-semibold text-gray-300 mt-4 sm:mt-0 sm:text-right">Jul 2023</span>
+                        </div>
+
+                        <div class="bg-gray-800/60 p-6 rounded-xl border border-cyan-500/40 shadow-lg flex flex-col sm:flex-row justify-between items-start sm:items-center">
+                            <div class="text-left">
+                                <p class="text-xl font-bold text-cyan-300">🤖 Robotics Competition - Robot Line Follower Competition 2nd Place (UDST)</p>
+                            </div>
+                            <span class="text-lg font-semibold text-gray-300 mt-4 sm:mt-0 sm:text-right">Mar 2023</span>
+                        </div>
+
+                        <div class="bg-gray-800/60 p-6 rounded-xl border border-fuchsia-500/40 shadow-lg flex flex-col sm:flex-row justify-between items-start sm:items-center">
+                            <div class="text-left">
+                                <p class="text-xl font-bold text-fuchsia-300">🌟 President's Medal Award for Academic Excellence (CNAQ)</p>
+                            </div>
+                            <span class="text-lg font-semibold text-gray-300 mt-4 sm:mt-0 sm:text-right">Jul 2020</span>
+                        </div>
+
+                        <div class="bg-gray-800/60 p-6 rounded-xl border border-lime-500/40 shadow-lg flex flex-col sm:flex-row justify-between items-start sm:items-center">
+                            <div class="text-left">
+                                <p class="text-xl font-bold text-lime-300">🤝 Member of Honor Society (CNAQ)</p>
+                            </div>
+                            <span class="text-lg font-semibold text-gray-300 mt-4 sm:mt-0 sm:text-right">Sep 2018 - Jul 2020</span>
+                        </div>
+
+                        <div class="bg-gray-800/60 p-6 rounded-xl border border-teal-500/40 shadow-lg flex flex-col sm:flex-row justify-between items-start sm:items-center">
+                            <div class="text-left">
+                                <p class="text-xl font-bold text-teal-300">🥉 Bronze medal - PLC programming (Skills competition CNAQ)</p>
+                            </div>
+                            <span class="text-lg font-semibold text-gray-300 mt-4 sm:mt-0 sm:text-right">Mar 2019</span>
+                        </div>
+
+                        <div class="bg-gray-800/60 p-6 rounded-xl border border-blue-500/40 shadow-lg flex flex-col sm:flex-row justify-between items-start sm:items-center">
+                            <div class="text-left">
+                                <p class="text-xl font-bold text-blue-300">💡 Subject topper: Engineering Graphics 12th Grade (AISSE) CBSE</p>
+                            </div>
+                            <span class="text-lg font-semibold text-gray-300 mt-4 sm:mt-0 sm:text-right">May 2016</span>
+                        </div>
+
+                        <div class="bg-gray-800/60 p-6 rounded-xl border border-green-500/40 shadow-lg flex flex-col sm:flex-row justify-between items-start sm:items-center">
+                            <div class="text-left">
+                                <p class="text-xl font-bold text-green-300">🌟 School topper 10th Grade (SSE) CBSE</p>
+                            </div>
+                            <span class="text-lg font-semibold text-gray-300 mt-4 sm:mt-0 sm:text-right">May 2014</span>
+                        </div>
+                    </div>
+
+                    <h3 class="text-4xl sm:text-5xl font-black mt-16 mb-8 text-center bg-gradient-to-r from-teal-400 to-blue-400 bg-clip-text text-transparent">Certifications</h3>
+                    <div class="space-y-8 mb-12 w-full px-4">
+                        <div class="bg-gray-800/60 p-6 rounded-xl border border-teal-500/40 shadow-lg">
+                            <p class="text-xl font-bold text-teal-300">📜 Google Project Management Course (5/6 Completed)</p>
+                        </div>
+                         <div class="bg-gray-800/60 p-6 rounded-xl border border-blue-500/40 shadow-lg">
+                            <p class="text-xl font-bold text-blue-300">💻 LinkedIn Learning Certifications</p>
+                        </div>
+                        <div class="bg-gray-800/60 p-6 rounded-xl border border-purple-500/40 shadow-lg">
+                            <p class="text-xl font-bold text-purple-300">🗣️ Seminar and Hackathon Participations</p>
+                        </div>
+                        <div class="bg-gray-800/60 p-6 rounded-xl border border-green-500/40 shadow-lg">
+                            <p class="text-xl font-bold text-green-300">📄 Other Skills Certificates</p>
+                            <p class="text-md text-gray-400 mt-2">View all certifications on my LinkedIn profile.</p>
+                            <a href="https://linkedin.com/in/ahyensm" target="_blank" rel="noopener noreferrer" class="text-cyan-400 hover:text-cyan-300 text-sm italic mt-2 block">
+                                View on LinkedIn <i class="fab fa-linkedin-in"></i>
+                            </a>
+                        </div>
+                    </div>
+
+
+                    <button class="back-to-home nav-block mt-16 w-auto h-auto text-xl !py-4 !px-8 font-bold">← Go Back</button>
+                </div>
+                <footer class="w-full">
+                    <div class="flex justify-center space-x-8">
+                        <a href="https://www.instagram.com/ahyensamrialostofa/" target="_blank" rel="noopener noreferrer" class="text-gray-300 hover:text-orange-400 transition-all duration-300 transform hover:scale-110">
+                            <i class="fab fa-instagram fa-3x"></i>
+                        </a>
+                        <a href="https://www.linkedin.com/in/ahyensm/" target="_blank" rel="noopener noreferrer" class="text-gray-300 hover:text-cyan-400 transition-all duration-300 transform hover:scale-110">
+                            <i class="fab fa-linkedin-in fa-3x"></i>
+                        </a>
+                        <a href="https://x.com/AhyenMostofa" target="_blank" rel="noopener noreferrer" class="text-gray-300 hover:text-pink-400 transition-all duration-300 transform hover:scale-110">
+                            <i class="fab fa-x-twitter fa-3x"></i>
+                        </a>
+                        <a href="https://github.com/AhyenSM" target="_blank" rel="noopener noreferrer" class="text-gray-300 hover:text-gray-500 transition-all duration-300 transform hover:scale-110">
+                            <i class="fab fa-github fa-3x"></i>
+                        </a>
+                        <a href="https://wa.me/97466439780?text=hi%2C%20i%27m%20interested%20to%20connect%20with%20you" target="_blank" rel="noopener noreferrer" class="text-gray-300 hover:text-green-500 transition-all duration-300 transform hover:scale-110">
+                            <i class="fab fa-whatsapp fa-3x"></i>
+                        </a>
+                        <a href="https://www.pinterest.com/ahyenmostofa/" target="_blank" rel="noopener noreferrer" class="text-gray-300 hover:text-red-600 transition-all duration-300 transform hover:scale-110">
+                            <i class="fab fa-pinterest fa-3x"></i>
+                        </a>
+                        <a href="mailto:ahyen-samrial-mostofa@outlook.com" class="text-gray-300 hover:text-green-400 transition-all duration-300 transform hover:scale-110">
+                            <i class="fas fa-envelope fa-3x"></i>
+                        </a>
+                    </div>
+                    <p class="mt-6 text-base text-gray-400 font-medium">ahyen-samrial-mostofa@outlook.com</p>
+                    <p class="mt-2 text-base text-gray-400 font-medium">&copy; 2025 Ahyen Samrial Mostofa. All rights reserved.</p>
+                </footer>
+            </div>
+        </section>
+
+    </div>
+
+    <!-- Scroll buttons -->
+    <button id="scroll-to-top-btn" class="scroll-button">
+        <i class="fas fa-arrow-up"></i>
+    </button>
+    <button id="scroll-to-bottom-btn" class="scroll-button">
+        <i class="fas fa-arrow-down"></i>
+    </button>
+
+    <script>
+        // Declare audio-related variables in a higher scope, but init when ready
+        let quranRecitation;
+        let quranVerseContainer;
+        let audioPlayButton;
+        let audioPauseButton;
+        let audioControls;
+        let audioErrorMessage;
+        let quranArabicDisplay;
+        
+        // Global variable to store word elements and control highlighting
+        let quranWords = [];
+        let highlightWordIndex = -1;
+        let highlightInterval = null;
+        let highlightStartTimeout = null; // To hold the 1.5s delay timeout
+
+        // Flag to track if it's the very first play attempt (for browser autoplay policies)
+        let isFirstPlayAttempt = true;
+
+        // Function to show audio error message prominently
+        window.showAudioError = (message) => { // Made global
+            if (audioErrorMessage) {
+                audioErrorMessage.textContent = message;
+                audioErrorMessage.classList.remove('hidden');
+            }
+            // Ensure controls are visible and show play icon if an error occurs
+            if (audioPlayButton) audioPlayButton.classList.remove('hidden');
+            if (audioPauseButton) audioPauseButton.classList.add('hidden');
+            // No changes to audioControls opacity/pointer-events, they are always visible now.
+            resetWordHighlights(); // Ensure word highlights are reset on error
+        };
+
+        // Function to update control button visibility based on audio state
+        window.updateAudioControlVisibility = () => { // Made global
+            if (!quranRecitation || !audioPlayButton || !audioPauseButton) {
+                return; // Ensure all elements are loaded
+            }
+
+            if (quranRecitation.paused || quranRecitation.ended) {
+                audioPlayButton.classList.remove('hidden');
+                audioPauseButton.classList.add('hidden');
+            } else { // Audio is actively playing
+                audioPlayButton.classList.add('hidden');
+                audioPauseButton.classList.remove('hidden');
+            }
+        };
+
+        // Handle initial playback attempt when entering the personal page
+        const handleAudioPlaybackAttempt = async () => {
+            if (!quranRecitation) return;
+
+            if (isFirstPlayAttempt) {
+                try {
+                    await quranRecitation.play();
+                    audioErrorMessage.classList.add('hidden');
+                    isFirstPlayAttempt = false; // Mark first attempt as done
+                    updateAudioControlVisibility(); // Update button visibility
+                } catch (error) {
+                    console.warn('Autoplay prevented or playback error:', error);
+                    if (error.name === 'NotAllowedError') {
+                        showAudioError('Autoplay is blocked by your browser. Please click the play button to listen.');
+                    } else if (error.name === 'NotSupportedError' || error.name === 'DOMException') {
+                        showAudioError('Audio format not supported or network error. Please try again.');
+                    } else {
+                        showAudioError('An unexpected error occurred during audio playback.');
+                    }
+                    updateAudioControlVisibility(); // Ensure play button is visible if autoplay failed
+                }
+            }
+        };
+
+        // Declare global variables for section elements
+        let homeSection;
+        let personalSection;
+        let professionalSection;
+        let academicsSection;
+        let pageContainer;
+
+        // Books Carousel Logic
+        let carouselInterval;
+        let isCarouselPaused = false;
+        const bookCarouselTrack = document.getElementById('book-carousel-track');
+        const bookCarouselContainer = document.getElementById('book-carousel-container'); // Get the container
+
+        const startCarousel = () => {
+            if (bookCarouselTrack) {
+                // Remove any existing cloned items to prevent duplication on re-entry
+                const existingClones = bookCarouselTrack.querySelectorAll('.carousel-item.cloned');
+                existingClones.forEach(clone => clone.remove());
+
+                // Clone original track content to create a seamless loop
+                const originalChildren = Array.from(bookCarouselTrack.children);
+                originalChildren.forEach(item => {
+                    const clonedItem = item.cloneNode(true);
+                    clonedItem.classList.add('cloned'); // Add a class to identify cloned items
+                    bookCarouselTrack.appendChild(clonedItem);
+                });
+
+                // Calculate total width of original items for animation
+                const itemWidth = originalChildren[0].offsetWidth + parseFloat(window.getComputedStyle(originalChildren[0]).marginRight);
+                const totalOriginalItems = originalChildren.length;
+                const totalTranslateWidth = itemWidth * totalOriginalItems;
+
+                // Update CSS variables directly on the element
+                // The animation direction is now handled by CSS 'animation-direction: reverse;'
+                const animationDuration = totalOriginalItems * 3; // 3 seconds per book approx for speed
+                bookCarouselTrack.style.setProperty('--carousel-animation-duration', `${animationDuration}s`);
+                bookCarouselTrack.style.setProperty('--carousel-translate-x', `-${totalTranslateWidth}px`); // Keep as negative for normal animation direction
+
+                bookCarouselTrack.style.animationPlayState = 'running';
+                isCarouselPaused = false;
+            }
+        };
+
+        const pauseCarousel = () => {
+            if (bookCarouselTrack) {
+                bookCarouselTrack.style.animationPlayState = 'paused';
+                isCarouselPaused = true;
+            }
+        };
+
+        const resumeCarousel = () => {
+            if (bookCarouselTrack) {
+                bookCarouselTrack.style.animationPlayState = 'running';
+                isCarouselPaused = false;
+            }
+        };
+
+        // Global variables for INTJ-T animation
+        let intjChars;
+        let intjAnimationLoop;
+        const animationDelayPerChar = 100; // ms between each character's animation start
+        const animationDurationPerChar = 1200; // ms, from CSS
+        const pauseAfterFullAnimation = 3000; // ms, pause before next loop starts
+        // Calculate the total duration of one animation cycle (animation + pause)
+        // (Number of characters - 1) * delay between chars + animation duration + pause duration
+        const totalAnimationCycleDuration = (6 - 1) * animationDelayPerChar + animationDurationPerChar + pauseAfterFullAnimation;
+
+        /**
+         * Starts the slot machine animation for the INTJ-T text.
+         * Resets character states and applies animation classes with staggered delays.
+         */
+        function startINTJAnimation() {
+            if (!intjChars || intjChars.length === 0) {
+                console.warn("INTJ characters not found for animation.");
+                return;
+            }
+
+            intjChars.forEach((charElement, index) => {
+                // Ensure the element starts in a completely reset state for animation
+                charElement.classList.remove('slide-down-active', 'slide-up-active');
+                charElement.style.animationDelay = ''; // Clear previous delay
+                charElement.style.opacity = '0'; // Explicitly set to 0 before forcing reflow
+
+                // Force a reflow/repaint to ensure the animation restarts from the beginning
+                void charElement.offsetWidth; // Accessing a property that forces layout recalculation
+
+                const delay = index * animationDelayPerChar;
+                // Determine animation direction based on character index
+                const animationType = (index % 2 === 0) ? 'slide-down-active' : 'slide-up-active';
+
+                // Apply the new animation class and set the staggered delay
+                charElement.classList.add(animationType);
+                charElement.style.animationDelay = `${delay}ms`;
+            });
+        }
+
+        /**
+         * Stops the INTJ-T slot machine animation and resets characters to their initial hidden state.
+         * Clears the animation interval.
+         */
+        function stopINTJAnimation() {
+            clearInterval(intjAnimationLoop); // Stop the looping interval
+            if (intjChars) {
+                intjChars.forEach(charElement => {
+                    charElement.classList.remove('slide-down-active', 'slide-up-active'); // Remove animation classes
+                    charElement.style.animationDelay = ''; // Clear any inline animation delays
+                    charElement.style.opacity = '0'; // Explicitly hide characters when stopping
+                });
+            }
+        }
+
+
+        // Function to reset all word highlights (make them white)
+        const resetWordHighlights = () => {
+            if (quranWords) {
+                quranWords.forEach(wordSpan => {
+                    wordSpan.classList.remove('active-highlight', 'fade-highlight');
+                });
+            }
+            highlightWordIndex = -1;
+            clearInterval(highlightInterval);
+            clearTimeout(highlightStartTimeout);
+            highlightInterval = null;
+            highlightStartTimeout = null;
+        };
+
+
+        // Function to process the next word highlight
+        const processNextWordHighlight = () => {
+            // De-highlight previous word if it exists and is not the first word
+            if (highlightWordIndex > 0 && highlightWordIndex - 1 < quranWords.length) {
+                quranWords[highlightWordIndex - 1].classList.remove('active-highlight');
+                quranWords[highlightWordIndex - 1].classList.add('fade-highlight'); // Previous word becomes faded
+            }
+
+            // Highlight current word if it exists
+            if (highlightWordIndex < quranWords.length) {
+                quranWords[highlightWordIndex].classList.add('active-highlight');
+            } else {
+                // If we've highlighted all words, stop the interval and reset
+                clearInterval(highlightInterval);
+                highlightInterval = null;
+                setTimeout(resetWordHighlights, 1000); // Reset all after 1 second
+                return; // Exit
+            }
+
+            highlightWordIndex++;
+        };
+
+
+        // This function will be called once the DOM is ready.
+        const initializePage = () => {
+            // Assign page section elements for event listeners
+            const showPersonalBtn = document.getElementById('show-personal-btn');
+            const showProfessionalBtn = document.getElementById('show-professional-btn');
+            const showAcademicsBtn = document.getElementById('show-academics-btn');
+            const backButtons = document.querySelectorAll('.back-to-home');
+
+            // Assign values to global section elements
+            homeSection = document.getElementById('home');
+            personalSection = document.getElementById('personal');
+            professionalSection = document.getElementById('professional');
+            academicsSection = document.getElementById('academics'); // Ensure this is fetched
+            pageContainer = document.getElementById('page-container');
+
+            // Log the status of key sections immediately after trying to get them
+            console.log('Home Section Element:', homeSection);
+            console.log('Personal Section Element:', personalSection);
+            console.log('Professional Section Element:', professionalSection);
+            console.log('Academics Section Element:', academicsSection);
+            console.log('Page Container Element:', pageContainer);
+
+            // Audio elements - moved initialization here for clarity
+            quranRecitation = document.getElementById('quran-recitation');
+            quranVerseContainer = document.getElementById('quran-verse-container');
+            audioPlayButton = document.getElementById('audio-play-button');
+            audioPauseButton = document.getElementById('audio-pause-button');
+            audioControls = document.getElementById('audio-controls');
+            audioErrorMessage = document.getElementById('audio-error-message');
+            quranArabicDisplay = document.getElementById('quran-arabic-display');
+
+            // Find all character wrappers for INTJ-T animation
+            intjChars = document.querySelectorAll('.personality-type-display .char-wrapper');
+
+            // Log audio element status
+            console.log('Quran Recitation Element:', quranRecitation);
+            console.log('Quran Verse Container:', quranVerseContainer);
+            console.log('Audio Play Button:', audioPlayButton);
+            console.log('Audio Pause Button:', audioPauseButton);
+            console.log('Audio Controls Container:', audioControls);
+            console.log('Audio Error Message Span:', audioErrorMessage);
+            console.log('Quran Arabic Display Container:', quranArabicDisplay);
+            console.log('INTJ Chars:', intjChars);
+
+
+            // Initial checks for critical elements - removed the `console.error` here
+            // as the showPage function now robustly re-fetches and checks.
+            // Keeping this check to be robust, but without immediate console error.
+            if (!homeSection || !personalSection || !professionalSection || !academicsSection || !pageContainer) {
+                // This condition might be true on initial script load if elements aren't ready,
+                // but showPage will re-evaluate.
+            }
+
+            // Hardcoded Arabic text for dynamic splitting
+            const arabicText = "قُلْ إِنَّ صَلَاتِى وَنُسُكِى وَمَحْيَاىَ وَمَمَاتِى لِلَّهِ رَبِّ ٱلْعَـٰلَمِينَ";
+            // A more robust split that accounts for Arabic word structure and ligatures,
+            // but for simplicity, we'll continue with space split if it's sufficient for the audio sync.
+            // For precise word-by-word sync with audio, a pre-computed timing array (like a WebVTT track)
+            // with timestamps for each word would be ideal, but it's beyond the scope of a simple split.
+            const words = arabicText.split(/\s+/); // Split by one or more spaces
+
+            // Populate quran-arabic-display with word spans + verse number SVG
+            if (quranArabicDisplay) {
+                quranArabicDisplay.innerHTML = ''; // Clear existing content
+                quranWords = []; // Reset the global array of word spans
+
+                words.forEach((word, index) => {
+                    const wordSpan = document.createElement('span');
+                    wordSpan.textContent = word;
+                    wordSpan.classList.add('quran-word');
+                    wordSpan.style.setProperty('--word-index', index); // Assign index for potential future use
+                    quranArabicDisplay.appendChild(wordSpan);
+                    quranWords.push(wordSpan);
+
+                    // Add a non-breaking space after each word, except the last one
+                    if (index < words.length - 1) {
+                        quranArabicDisplay.appendChild(document.createTextNode('\u00A0')); // Non-breaking space
+                    }
+                });
+
+                // Append the SVG for the verse number after all words
+                const svgElement = document.createElementNS("http://www.w3.org/2000/svg", "svg");
+                svgElement.setAttribute('width', '40');
+                svgElement.setAttribute('height', '40');
+                svgElement.setAttribute('viewBox', '0 0 100 100');
+                svgElement.setAttribute('fill', 'none');
+                svgElement.classList.add('inline-block', 'align-middle', 'ml-2', 'flex-shrink-0');
+
+                const circle = document.createElementNS("http://www.w3.org/2000/svg", "circle");
+                circle.setAttribute('cx', '50');
+                circle.setAttribute('cy', '50');
+                circle.setAttribute('r', '45');
+                circle.setAttribute('stroke', '#22D3EE');
+                circle.setAttribute('stroke-width', '5');
+                svgElement.appendChild(circle);
+
+                const text = document.createElementNS("http://www.w3.org/2000/svg", "text");
+                text.setAttribute('x', '50%');
+                text.setAttribute('y', '50%');
+                text.setAttribute('dominant-baseline', 'middle');
+                text.setAttribute('text-anchor', 'middle');
+                text.setAttribute('font-family', 'Noto Naskh Arabic, Scheherazade New, serif');
+                text.setAttribute('font-size', '30');
+                text.setAttribute('fill', '#FFFFFF');
+                text.textContent = '١٦٢'; // Arabic numeral for 162
+                svgElement.appendChild(text);
+
+                quranArabicDisplay.appendChild(svgElement);
+            }
+
+
+            const body = document.body;
+            body.addEventListener('mousemove', (e) => {
+                body.style.setProperty('--cursor-x', e.clientX + 'px');
+                body.style.setProperty('--cursor-y', e.clientY + 'px');
+            });
+
+            const typingTextElement = document.getElementById('typing-text');
+            const phrases = ["an Electrical Engineer", "an AIML & PM enthusiast", "an Operations, Admin & Marketing Assistant", "a Customer Service & Experience Consultant", "a newbie Roboticist", "a Process Automation & Controls Technologist", "a Humble Practicing Muslim"];
+            let phraseIndex = 0; let charIndex = 0; let isDeleting = false;
+            function type() {
+                if (!typingTextElement) return; // Add null check for robustness
+                const currentPhrase = phrases[phraseIndex];
+                typingTextElement.textContent = currentPhrase.substring(0, charIndex);
+
+                if (isDeleting) { charIndex--; } else { charIndex++; }
+                
+                let typeSpeed = isDeleting ? 75 : 150;
+                
+                if (!isDeleting && charIndex === currentPhrase.length + 1) {
+                    typeSpeed = 2000; isDeleting = true;
+                } else if (isDeleting && charIndex === 0) {
+                    isDeleting = false; phraseIndex = (phraseIndex + 1) % phrases.length; typeSpeed = 500;
+                }
+                
+                setTimeout(type, typeSpeed);
+            }
+            setTimeout(type, 1500);
+
+            // Re-assigning scroll buttons elements for robustness
+            const scrollToTopBtn = document.getElementById('scroll-to-top-btn');
+            const scrollToBottomBtn = document.getElementById('scroll-to-bottom-btn');
+
+            let currentScrollArea = null;
+
+
+            function resetScroll() {
+                if (currentScrollArea) {
+                    currentScrollArea.scrollTop = 0;
+                }
+            }
+
+            function handleScroll() {
+                if (!currentScrollArea || !scrollToTopBtn || !scrollToBottomBtn) {
+                    return;
+                }
+
+                const isScrollable = currentScrollArea.scrollHeight > currentScrollArea.clientHeight + 10;
+
+                if (isScrollable) {
+                    if (currentScrollArea.scrollTop > 100) {
+                        scrollToTopBtn.classList.add('visible');
+                    } else {
+                        scrollToTopBtn.classList.remove('visible');
+                    }
+
+                    const scrollBottomThreshold = currentScrollArea.scrollHeight - currentScrollArea.clientHeight - 100;
+                    if (currentScrollArea.scrollTop < scrollBottomThreshold) {
+                        scrollToBottomBtn.classList.add('visible');
+                    } else {
+                        scrollToBottomBtn.classList.remove('visible');
+                    }
+                } else {
+                    // If not scrollable, hide both buttons
+                    scrollToTopBtn.classList.remove('visible');
+                    scrollToBottomBtn.classList.remove('visible');
+                }
+            }
+
+
+            function showPage(targetPageId) {
+                // Re-fetch section elements to ensure they are current, as they might have been null previously
+                homeSection = document.getElementById('home');
+                personalSection = document.getElementById('personal');
+                professionalSection = document.getElementById('professional');
+                academicsSection = document.getElementById('academics'); // Crucial re-fetch
+                pageContainer = document.getElementById('page-container');
+
+                // Critical element checks with specific error messages using global variables
+                if (!homeSection) { console.error("Error: homeSection is null. Page transitions might not function correctly."); return; }
+                if (!personalSection) { console.error("Error: personalSection is null. Page transitions might not function correctly."); return; }
+                if (!professionalSection) { console.error("Error: professionalSection is null. Page transitions might not function correctly."); return; }
+                if (!academicsSection) { console.error("Error: academicsSection is null. Page transitions might not function correctly."); return; } // Keep this line
+                if (!pageContainer) { console.error("Error: pageContainer is null. Page transitions might not function correctly."); return; }
+
+
+                // Remove all hide classes from home to prepare for new transition
+                homeSection.classList.remove('hide-personal', 'hide-professional', 'hide-academics');
+
+                let activePage = document.querySelector('.page-section.active');
+
+                if (activePage && activePage.id !== targetPageId) {
+                    activePage.classList.remove('active');
+                    if (activePage.id === 'home') {
+                        if (targetPageId === 'personal') homeSection.classList.add('hide-personal');
+                        else if (targetPageId === 'professional') homeSection.classList.add('hide-professional');
+                        else if (targetPageId === 'academics') homeSection.classList.add('hide-academics');
+                    }
+                }
+
+                let targetPage;
+                switch(targetPageId) {
+                    case 'home': targetPage = homeSection; break;
+                    case 'personal': targetPage = personalSection; break;
+                    case 'professional': targetPage = professionalSection; break;
+                    case 'academics': targetPage = academicsSection; break;
+                    default: console.error(`Unknown target page ID: ${targetPageId}`); return;
+                }
+
+                if (targetPage) {
+                    targetPage.classList.add('active');
+                    if (targetPageId === 'personal') {
+                        // Attempt audio playback when entering personal page
+                        handleAudioPlaybackAttempt();
+                        // Start carousel when entering personal page
+                        startCarousel();
+                        // Start INTJ animation
+                        startINTJAnimation();
+                        // Set interval to loop the animation
+                        intjAnimationLoop = setInterval(startINTJAnimation, totalAnimationCycleDuration);
+
+                    } else {
+                        // Pause audio and reset if navigating away from personal page
+                        if (quranRecitation && !quranRecitation.paused) {
+                            quranRecitation.pause();
+                        }
+                        if (quranRecitation) quranRecitation.currentTime = 0; // Reset audio position
+                        isFirstPlayAttempt = true; // Reset flag for next entry
+                        updateAudioControlVisibility(); // Ensure controls are reset to play button (hidden on non-hover)
+                        if (audioErrorMessage) audioErrorMessage.classList.add('hidden'); // Hide error message
+                        // Pause carousel if navigating away from personal page
+                        pauseCarousel(); // Pause carousel
+                        // Stop INTJ animation when navigating away from personal page
+                        stopINTJAnimation();
+                        // Reset word highlights when leaving personal page
+                        resetWordHighlights();
+                    }
+                } else {
+                    console.error(`Error: Target page element '${targetPageId}' is null when trying to activate it. Check HTML IDs.`);
+                    return; // Crucial: return if targetPage is null to prevent further errors
+                }
+
+                // Remove old scroll listener and add new one for the current page's content-wrapper
+                if (currentScrollArea) {
+                    currentScrollArea.removeEventListener('scroll', handleScroll);
+                }
+                currentScrollArea = targetPage.querySelector('.content-wrapper');
+
+                if (currentScrollArea) {
+                    currentScrollArea.addEventListener('scroll', handleScroll);
+                }
+
+                resetScroll(); // Reset scroll position for the newly active page
+                setTimeout(handleScroll, 100); // Small delay to ensure scrollHeight is calculated
+            }
+
+            // Initial load: show home page
+            // Delay the initial showPage call to ensure all elements are definitively rendered
+            setTimeout(() => {
+                showPage('home');
+            }, 100); // 100ms delay to give more time for DOM rendering
+
+            // Event Listeners for navigation buttons
+            if (showPersonalBtn) {
+                showPersonalBtn.addEventListener('click', () => {
+                    showPage('personal');
+                });
+            }
+            if (showProfessionalBtn) {
+                showProfessionalBtn.addEventListener('click', () => {
+                    showPage('professional');
+                });
+            }
+            if (showAcademicsBtn) {
+                showAcademicsBtn.addEventListener('click', () => {
+                    showPage('academics');
+                });
+            }
+            backButtons.forEach(button => {
+                button.addEventListener('click', () => {
+                    showPage('home');
+                });
+            });
+
+            // Event Listeners for scroll buttons
+            if (scrollToTopBtn) {
+                scrollToTopBtn.addEventListener('click', () => {
+                    if (currentScrollArea) {
+                        currentScrollArea.scrollTo({
+                            top: 0,
+                            behavior: 'smooth'
+                        });
+                    }
+                });
+            }
+
+            if (scrollToBottomBtn) {
+                scrollToBottomBtn.addEventListener('click', () => {
+                    if (currentScrollArea) {
+                        currentScrollArea.scrollTo({
+                            top: currentScrollArea.scrollHeight,
+                            behavior: 'smooth'
+                        });
+                    }
+                });
+            }
+
+            // --- Formspree Integration ---
+            const emailForm = document.getElementById('email-submit-form');
+            const formMessage = document.getElementById('form-message');
+
+            if (emailForm) {
+                emailForm.addEventListener('submit', async (event) => {
+                    event.preventDefault();
+
+                    const formData = new FormData(emailForm);
+                    // No need to get email and message separately from formData now
+                    // Just ensure the 'message' input name is correct in HTML
+
+                    // Basic client-side email validation for UX
+                    const emailInput = emailForm.querySelector('input[name="email"]');
+                    if (!emailInput || !emailInput.value || !emailInput.value.includes('@') || !emailInput.value.includes('.')) {
+                        formMessage.textContent = 'Please enter a valid email address.';
+                        formMessage.className = 'show error';
+                        setTimeout(() => formMessage.classList.remove('show'), 5000);
+                        return;
+                    }
+
+                    formMessage.textContent = 'Sending your email...';
+                    formMessage.className = 'show';
+
+                    try {
+                        const response = await fetch("https://formspree.io/f/xzzgdnoe", {
+                            method: "POST",
+                            body: formData, // FormData will automatically include all named inputs
+                            headers: {
+                                'Accept': 'application/json'
+                            }
+                        });
+
+                        if (response.ok) {
+                            formMessage.textContent = 'Thank you for connecting! We will be in touch.';
+                            formMessage.className = 'show success';
+                            emailForm.reset();
+                            // Shrink message slot after successful submission
+                            const messageInput = document.getElementById('message-slot');
+                            if (messageInput) {
+                                messageInput.style.height = '48px'; // Back to original height
+                                messageInput.classList.remove('rounded-lg');
+                                messageInput.classList.add('rounded-full');
+                                messageInput.style.paddingTop = '12px'; // Restore padding
+                                messageInput.style.paddingBottom = '12px';
+                            }
+                        } else {
+                            const data = await response.json();
+                            if (data.errors) {
+                                formMessage.textContent = data.errors.map(error => error.message).join(", ");
+                            } else {
+                                formMessage.textContent = 'Oops! There was an error submitting your email.';
+                            }
+                            formMessage.className = 'show error';
+                        }
+                    } catch (error) {
+                        console.error('Network or submission error:', error);
+                        formMessage.textContent = 'Network error. Please try again.';
+                        formMessage.className = 'show error';
+                    } finally {
+                        setTimeout(() => formMessage.classList.remove('show'), 5000);
+                    }
+                });
+            }
+
+            // Message slot expansion logic
+            const messageSlot = document.getElementById('message-slot');
+            if (messageSlot) {
+                messageSlot.addEventListener('focus', () => {
+                    messageSlot.style.height = '80px'; // Expand to a fixed height
+                    messageSlot.classList.remove('rounded-full');
+                    messageSlot.classList.add('rounded-lg');
+                    messageSlot.style.paddingTop = '12px'; // Adjust padding for expanded view
+                    messageSlot.style.paddingBottom = '12px';
+                });
+
+                messageSlot.addEventListener('blur', () => {
+                    if (messageSlot.value.trim() === '') {
+                        messageSlot.style.height = '48px'; // Shrink back to 1 row height (approx. 3rem for py-3 + border)
+                        messageSlot.classList.remove('rounded-lg');
+                        messageSlot.classList.add('rounded-full');
+                        messageSlot.style.paddingTop = '12px'; // Restore padding
+                        messageSlot.style.paddingBottom = '12px';
+                    }
+                });
+            }
+
+            // --- Quran Recitation Event Listeners ---
+            if (quranRecitation && audioPlayButton && audioPauseButton && audioControls && audioErrorMessage && quranArabicDisplay) {
+                quranRecitation.loop = false; // Ensure it plays only once
+
+                audioPlayButton.addEventListener('click', async () => {
+                    try {
+                        await quranRecitation.play();
+                        audioErrorMessage.classList.add('hidden'); // Hide error message on successful play
+                        isFirstPlayAttempt = false; // Mark first play attempt done
+                        updateAudioControlVisibility(); // Hide play, show pause, set playing class
+                    } catch (error) {
+                        console.error('Error attempting to play audio:', error);
+                        if (error.name === 'NotAllowedError') {
+                            showAudioError('Autoplay is blocked by your browser. Please click the play button to listen.');
+                        } else {
+                            showAudioError('Could not play audio. Check source or format.');
+                        }
+                        updateAudioControlVisibility(); // Keep play button visible if play failed
+                    }
+                });
+
+                audioPauseButton.addEventListener('click', () => {
+                    quranRecitation.pause();
+                    updateAudioControlVisibility();
+                });
+
+                quranRecitation.addEventListener('play', () => {
+                    updateAudioControlVisibility();
+                    resetWordHighlights(); // Ensure all words are white before starting
+                    
+                    // Start word highlighting after 1.5 seconds from audio start
+                    highlightStartTimeout = setTimeout(() => {
+                        if (quranRecitation.duration > 1.5 && quranWords.length > 0) { // Ensure enough audio duration and words
+                            const effectiveDuration = quranRecitation.duration - 1.5;
+                            const intervalTime = (effectiveDuration / quranWords.length) * 1000; // Time per word in ms
+                            
+                            // If there are words and a valid interval time, start highlighting
+                            if (intervalTime > 0) {
+                                highlightWordIndex = 0; // Start from the first word
+                                processNextWordHighlight(); // Highlight the first word immediately
+                                highlightInterval = setInterval(processNextWordHighlight, intervalTime);
+                            } else {
+                                // Fallback for very short audio or if intervalTime is zero/negative
+                                quranWords.forEach(wordSpan => wordSpan.classList.add('active-highlight'));
+                                setTimeout(resetWordHighlights, 1000); // Reset all after 1 second
+                            }
+                        } else {
+                            // If audio is too short or no words, just highlight everything briefly
+                            quranWords.forEach(wordSpan => wordSpan.classList.add('active-highlight'));
+                            setTimeout(resetWordHighlights, 1000); // Reset all after 1 second
+                        }
+                    }, 1500); // 1.5 second delay before the first word highlights
+                });
+
+                quranRecitation.addEventListener('pause', () => {
+                    updateAudioControlVisibility();
+                    resetWordHighlights(); // Reset highlights on pause
+                });
+
+                quranRecitation.addEventListener('ended', () => {
+                    quranRecitation.currentTime = 0;
+                    updateAudioControlVisibility();
+                    isFirstPlayAttempt = true;
+                    // Ensure all intervals and timeouts are cleared and highlights are reset
+                    resetWordHighlights();
+                });
+                
+                quranRecitation.addEventListener('error', (e) => {
+                    console.error('Audio error:', e);
+                    let errorMessage = 'An unknown audio error occurred.';
+                    switch (quranRecitation.error.code) {
+                        case MediaError.MEDIA_ERR_ABORTED:
+                            errorMessage = 'Audio playback aborted.';
+                            break;
+                        case MediaError.MEDIA_ERR_NETWORK:
+                            errorMessage = 'A network error caused the audio download to fail.';
+                            break;
+                        case MediaError.MEDIA_ERR_DECODE:
+                            errorMessage = 'The audio playback was aborted due to a corruption problem or because the media uses features your browser does not support.';
+                            break;
+                        case MediaError.MEDIA_ERR_SRC_NOT_SUPPORTED:
+                            errorMessage = 'The audio could not be loaded. Please ensure the MP3 is publicly accessible and correctly hosted.';
+                            break;
+                    }
+                    showAudioError(errorMessage);
+                    isFirstPlayAttempt = true; // On error, allow it to be a first play attempt again
+                    resetWordHighlights(); // Stop word highlighting on error
+                });
+
+                // Load audio on page load to catch initial source errors
+                quranRecitation.load();
+                updateAudioControlVisibility(); // Set initial state of buttons
+            } else {
+                console.error("ERROR: One or more audio-related elements are null. Audio features might not function. Ensure quran-recitation, quran-verse-container, audio-play-button, audio-pause-button, audio-controls, audio-error-message, and quran-arabic-display exist.");
+            }
+
+            // Carousel event listeners: Pause on hover, resume on mouse leave
+            if (bookCarouselContainer) {
+                bookCarouselContainer.addEventListener('mouseenter', pauseCarousel);
+                bookCarouselContainer.addEventListener('mouseleave', resumeCarousel);
+                bookCarouselContainer.addEventListener('click', () => {
+                    if (isCarouselPaused) {
+                        resumeCarousel();
+                    } else {
+                        pauseCarousel();
+                    }
+                });
+            }
+
+            // Initial call to start carousel on personal page load if it's the active page
+            // This is now handled within the showPage function to ensure it only starts when 'personal' is active.
+        };
+
+        // Call the initialize function once the DOM is fully loaded
+        document.addEventListener('DOMContentLoaded', initializePage);
+    </script>
+</body>
+</html>
