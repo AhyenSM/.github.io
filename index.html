@@ -505,16 +505,19 @@
                 height: 24rem;
             }
 
-            /* Skill tags break words on smaller screens */
-            .skill-tag {
-                white-space: normal; /* Allow skill tags to wrap text */
-                word-break: break-word; /* Break long words */
-                font-size: 0.8rem; /* Even smaller for very tiny screens */
-                padding: 0.5rem 0.75rem; /* Reduce padding slightly */
-            }
             /* Footer icon size reduction for screens smaller than 480px */
             footer .fab, footer .fas {
                 font-size: 2em !important; /* Force to fa-2x equivalent */
+            }
+             /* Skills and Abilities - allow wrapping on very small screens */
+            .skill-tag {
+                font-size: 0.8rem; /* Even smaller for very tiny screens */
+                padding: 0.5rem 0.75rem; /* Reduce padding slightly */
+                white-space: normal; /* Allow skill tags to wrap text */
+                word-break: break-word; /* Break long words */
+            }
+            footer .flex-wrap {
+                gap: 0.5rem; /* Smaller gap for very small screens */
             }
         }
 
@@ -522,6 +525,9 @@
         @media (max-width: 375px) {
             footer .fab, footer .fas {
                 font-size: 1.8em !important; /* Slightly smaller for very narrow screens */
+            }
+            footer .flex-wrap {
+                gap: 0.25rem; /* Even smaller gap */
             }
         }
 
@@ -755,7 +761,7 @@
         .personality-combined-box .personality-type-display {
             font-family: "Varela Round", sans-serif; /* Fallback for Myriad Pro */
             font-size: 5rem; /* Larger font size */
-            line-height: 1; /* Single line */
+            line-height: 1;
             display: flex;
             justify-content: center;
             align-items: center;
@@ -1293,7 +1299,7 @@
 
                     <h3 class="text-4xl sm:text-5xl font-black mt-16 mb-8 text-center bg-gradient-to-r from-green-400 to-lime-400 bg-clip-text text-transparent">Skills & Abilities</h3>
                     <div class="flex flex-wrap justify-center gap-3 sm:gap-4 text-lg sm:text-xl w-full lg:max-w-4xl px-4 text-center mb-12">
-                        <span class="skill-tag px-4 py-2 rounded-full bg-blue-700/30 border border-blue-500/50 whitespace-nowrap">MS Office (Word, Excel, PowerPoint, Outlook, OneDrive, Sharepoint, Project, Visio & Forms)</span>
+                        <span class="skill-tag px-4 py-2 rounded-full bg-blue-700/30 border border-blue-500/50">MS Office (Word, Excel, PowerPoint, Outlook, OneDrive, Sharepoint, Project, Visio & Forms)</span>
                         <span class="skill-tag px-4 py-2 rounded-full bg-green-700/30 border border-green-500/50 whitespace-nowrap">AutoCAD Electrical</span>
                         <span class="skill-tag px-4 py-2 rounded-full bg-yellow-700/30 border border-yellow-500/50 whitespace-nowrap">Rockwell Software Studio 5000</span>
                         <span class="skill-tag px-4 py-2 rounded-full bg-pink-700/30 border border-pink-500/50 whitespace-nowrap">Factory Talk</span>
