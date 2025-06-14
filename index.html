@@ -399,6 +399,11 @@
             .timeline-item.current-experience .timeline-content-wrapper::before {
                 border-right-color: rgba(34, 211, 238, 0.4); /* Match new background for right arrow on mobile */
             }
+
+            /* Skill tags text size for medium mobile */
+            .skill-tag {
+                font-size: 0.875rem; /* text-sm, slightly smaller than text-lg */
+            }
         }
 
         /* Responsive adjustments for overall layout */
@@ -481,15 +486,16 @@
             .md\:text-5xl {
                  font-size: 2.0rem; /* Adjusted for smaller screens */
             }
-             #profile-pic-container img {
-                width: 16rem; /* Adjust image size for very small screens */
-                height: 10rem;
+             /* Changed from h-80 to h-64 to make it more consistently visible */
+            #profile-pic-container img {
+                height: 16rem; /* Adjust image size for very small screens */
+                width: auto;
             }
             /* Ensuring these are consistent with above */
             .w-auto {
                 width: auto;
             }
-            .h-80 {
+            .h-80 { /* This rule is now effectively overridden by #profile-pic-container img */
                 height: 20rem; /* Adjust image size for very small screens */
             }
             .md\:w-auto {
@@ -503,6 +509,19 @@
             .skill-tag {
                 white-space: normal; /* Allow skill tags to wrap text */
                 word-break: break-word; /* Break long words */
+                font-size: 0.8rem; /* Even smaller for very tiny screens */
+                padding: 0.5rem 0.75rem; /* Reduce padding slightly */
+            }
+            /* Footer icon size reduction for screens smaller than 480px */
+            footer .fab, footer .fas {
+                font-size: 2em !important; /* Force to fa-2x equivalent */
+            }
+        }
+
+        /* Further reduce icon size for extremely narrow screens */
+        @media (max-width: 375px) {
+            footer .fab, footer .fas {
+                font-size: 1.8em !important; /* Slightly smaller for very narrow screens */
             }
         }
 
@@ -601,14 +620,53 @@
             font-weight: 700; /* Ensure it's bold */
             color: #FFFFFF; /* Default white color */
             direction: rtl; /* Ensure Right-to-Left for Arabic text */
-            
-            /* New properties for single line and adjusted size */
-            font-size: 1.8rem; /* Adjusted for better fit on single line, slightly larger */
-            line-height: 1.5; /* Adjusted to a more typical value for Arabic */
-            display: flex; /* Use flexbox to align text and SVG */
-            align-items: center; /* Vertically center items */
-            justify-content: center; /* Horizontally center the content */
-            /* Removed white-space: nowrap; and overflow: hidden; */
+            font-size: 1.8rem; /* Default for larger screens */
+            line-height: 1.5;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        /* Styles for the SVG verse number within the quran-arabic-text */
+        .quran-arabic-text svg {
+            width: 40px; /* Default size */
+            height: 40px;
+            flex-shrink: 0; /* Prevent it from shrinking */
+        }
+        .quran-arabic-text svg text {
+            font-size: 30px; /* Default text size inside SVG */
+        }
+
+        /* Responsive adjustments for Quranic verse container and text */
+        @media (max-width: 640px) { /* sm breakpoint from Tailwind */
+            #quran-verse-container {
+                padding: 1rem; /* p-4 equivalent for small screens */
+            }
+            .quran-arabic-text {
+                font-size: 1.6rem; /* Slightly smaller for small phones */
+            }
+            .quran-arabic-text svg {
+                width: 35px; /* Slightly smaller SVG */
+                height: 35px;
+            }
+            .quran-arabic-text svg text {
+                font-size: 28px; /* Adjust text inside SVG */
+            }
+        }
+
+        @media (max-width: 480px) { /* Even smaller for very small phones */
+            #quran-verse-container {
+                padding: 0.75rem; /* p-3 equivalent */
+            }
+            .quran-arabic-text {
+                font-size: 1.4rem; /* Further reduced for tiny screens */
+            }
+            .quran-arabic-text svg {
+                width: 30px; /* Even smaller SVG */
+                height: 30px;
+            }
+            .quran-arabic-text svg text {
+                font-size: 25px; /* Adjust text inside SVG */
+            }
         }
 
         /* Styles for individual words */
@@ -866,7 +924,8 @@
 
                     <div class="flex flex-col md:flex-row items-center justify-center gap-8 md:gap-12">
                         <div id="profile-pic-container" class="relative rounded-2xl px-0 py-2 bg-black/20">
-                            <img id="profile-pic" src="https://raw.githubusercontent.com/AhyenSM/profile-images/main/Portrait_LinkedIn_jpg(1)(1).png" alt="Ahyen Samrial Mostofa" class="rounded-xl w-auto h-80 md:w-auto md:h-96 object-cover object-top">
+                            <!-- Adjusted image height for better mobile fit -->
+                            <img id="profile-pic" src="https://raw.githubusercontent.com/AhyenSM/profile-images/main/Portrait_LinkedIn_jpg(1)(1).png" alt="Ahyen Samrial Mostofa" class="rounded-xl w-auto h-64 sm:h-80 md:w-auto md:h-96 object-cover object-top">
                         </div>
                         <div class="relative text-center md:text-left">
                                <div id="arrow-pointer" class="hidden md:block">
@@ -909,7 +968,7 @@
 
                 </div>
                 <footer class="w-full">
-                    <div class="flex justify-center space-x-8 px-4"> <!-- Added px-4 -->
+                    <div class="flex flex-wrap justify-center gap-4 sm:gap-6 md:gap-8 px-4">
                         <a href="https://www.instagram.com/ahyensamrialostofa/" target="_blank" rel="noopener noreferrer" class="text-gray-300 hover:text-orange-400 transition-all duration-300 transform hover:scale-110">
                             <i class="fab fa-instagram fa-3x"></i>
                         </a>
@@ -940,7 +999,7 @@
 
         <section id="personal" class="page-section bg-gradient-to-br from-purple-900/20 to-blue-900/20">
             <div class="content-wrapper">
-                <div id="quran-verse-container" class="relative max-w-4xl mx-auto text-center mb-10 p-6 rounded-xl bg-gray-800/60 border border-purple-500/40 shadow-lg group"> <!-- Added 'group' class back -->
+                <div id="quran-verse-container" class="relative max-w-4xl mx-auto text-center mb-10 p-4 sm:p-6 rounded-xl bg-gray-800/60 border border-purple-500/40 shadow-lg group"> <!-- Added 'group' class back -->
                     <audio id="quran-recitation" src="https://raw.githubusercontent.com/AhyenSM/profile-images/main/AbdulBasit6.162.mp3"></audio>
                     <div id="audio-controls">
                         <button id="audio-play-button" class="audio-control-button">
@@ -1065,7 +1124,7 @@
             
                 <!-- Social Footer for Personal page - MOVED INSIDE content-wrapper -->
                 <footer class="w-full mt-16"> <!-- Added mt-16 for spacing, adjust as needed -->
-                    <div class="flex justify-center space-x-8 px-4"> <!-- Added px-4 -->
+                    <div class="flex flex-wrap justify-center gap-4 sm:gap-6 md:gap-8 px-4">
                         <a href="https://www.instagram.com/ahyensamrialostofa/" target="_blank" rel="noopener noreferrer" class="text-gray-300 hover:text-orange-400 transition-all duration-300 transform hover:scale-110">
                             <i class="fab fa-instagram fa-3x"></i>
                         </a>
@@ -1233,7 +1292,7 @@
                     </div>
 
                     <h3 class="text-4xl sm:text-5xl font-black mt-16 mb-8 text-center bg-gradient-to-r from-green-400 to-lime-400 bg-clip-text text-transparent">Skills & Abilities</h3>
-                    <div class="flex flex-wrap justify-center gap-4 text-lg sm:text-xl max-w-4xl px-4 text-center mb-12">
+                    <div class="flex flex-wrap justify-center gap-3 sm:gap-4 text-lg sm:text-xl w-full lg:max-w-4xl px-4 text-center mb-12">
                         <span class="skill-tag px-4 py-2 rounded-full bg-blue-700/30 border border-blue-500/50 whitespace-nowrap">MS Office (Word, Excel, PowerPoint, Outlook, OneDrive, Sharepoint, Project, Visio & Forms)</span>
                         <span class="skill-tag px-4 py-2 rounded-full bg-green-700/30 border border-green-500/50 whitespace-nowrap">AutoCAD Electrical</span>
                         <span class="skill-tag px-4 py-2 rounded-full bg-yellow-700/30 border border-yellow-500/50 whitespace-nowrap">Rockwell Software Studio 5000</span>
@@ -1260,7 +1319,7 @@
                 </div>
                 <!-- Footer added here -->
                 <footer class="w-full mt-16">
-                    <div class="flex justify-center space-x-8 px-4"> <!-- Added px-4 -->
+                    <div class="flex flex-wrap justify-center gap-4 sm:gap-6 md:gap-8 px-4">
                         <a href="https://www.instagram.com/ahyensamrialostofa/" target="_blank" rel="noopener noreferrer" class="text-gray-300 hover:text-orange-400 transition-all duration-300 transform hover:scale-110">
                             <i class="fab fa-instagram fa-3x"></i>
                         </a>
@@ -1458,7 +1517,7 @@
                     <button class="back-to-home nav-block mt-16 w-auto h-auto text-xl !py-4 !px-8 font-bold">← Go Back</button>
                 </div>
                 <footer class="w-full">
-                    <div class="flex justify-center space-x-8 px-4"> <!-- Added px-4 -->
+                    <div class="flex flex-wrap justify-center gap-4 sm:gap-6 md:gap-8 px-4">
                         <a href="https://www.instagram.com/ahyensamrialostofa/" target="_blank" rel="noopener noreferrer" class="text-gray-300 hover:text-orange-400 transition-all duration-300 transform hover:scale-110">
                             <i class="fab fa-instagram fa-3x"></i>
                         </a>
